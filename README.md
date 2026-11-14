@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mutuari
 
-## Getting Started
+A local, peer-to-peer clothing rental marketplace MVP, built from the
+"Clothing Rental Marketplace — Desktop MVP" Figma file.
 
-First, run the development server:
+Next.js 16 (App Router) · React 19 · Tailwind CSS 4 · shadcn/ui (Base UI) · lucide-react
+
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # then paste your Postgres connection string
+npm run db:setup             # creates tables + loads sample lenders, listings and photos
+npm run dev                  # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`DATABASE_URL` works with any Postgres:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Neon** — Project → Connect → copy the **pooled** connection string.
+- **Supabase** — Connect → **Transaction pooler** connection string.
+- **Local** — `postgres://user@localhost:5432/mutuari`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`npm run db:setup` is safe to re-run; it never overwrites existing rows.
+When deploying, set `DATABASE_URL` in the host's environment variables.
 
-## Learn More
+## What's in it
 
-To learn more about Next.js, take a look at the following resources:
+| Area    | Routes |
+| ------- | ------ |
+| Public  | `/` · `/browse` · `/listing/[id]` · `/help` · `/signup` · `/login` |
+| Renter  | `/onboarding` · `/listing/[id]/try-on` · `/listing/[id]/reserve` · `/rentals` · `/rentals/[id]` · `/rentals/[id]/confirmed` · `/rentals/[id]/return` |
+| Lender  | `/lender` · `/lender/closet` · `/lender/closet/new` · `/lender/requests` · `/lender/earnings` |
+| Shared  | `/messages` · `/profile` · `/settings` |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Backend
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Accounts and listings are real and shared between users. Everything else is still sample data.
 
-## Deploy on Vercel
+| Data | Where it lives |
+| ---- | -------------- |
+| Accounts, sessions, profile, sizes, settings | Postgres (`users`, `sessions`) |
+| Listings and their photos | Postgres (`listings`, `listing_photos`) |
+| Rentals, try-ons, requests, messages, earnings, favourites | This browser's `localStorage`, per signed-in user |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+API (all under `src/app/api`, JSON in and out):
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Route | What it does |
+| ----- | ------------ |
+| `POST /api/auth/signup` · `login` · `logout` | Email + password accounts; sets or clears the session cookie |
+| `GET /api/bootstrap` | The signed-in account, every listed item (plus your own drafts), and the owners' public profiles |
+| `PATCH /api/me` · `DELETE /api/me` | Update or delete your own account |
+| `POST /api/listings` · `PUT/DELETE /api/listings/[id]` | Create, edit or delete a listing you own |
+| `GET /api/photos/[id]` | Serves a listing photo |
+
+Security notes:
+
+- Passwords are hashed with scrypt and a per-user salt; the hash never leaves the server.
+- Sessions are random tokens in an `HttpOnly`, `SameSite=Lax` cookie (30 days). Only a hash of the token is stored.
+- Writes from other origins are rejected, input is validated with zod, and listings can only be changed by their owner.
+- Other users see a lender as "First L." with no email or phone.
+- The tables have row-level security on with no policies, so Supabase's public REST API (and its publishable key) cannot read or write them; only the app's own database connection can.
+- Not built yet: login rate limiting, email verification, password reset, and Google/Apple sign-in.
+
+## What is still simulated
+
+- Other lenders and renters are sample people. Sample lenders "accept" a try-on or reservation about
+  12 seconds after you request it; a sample renter requests each listing you publish about 15 seconds later.
+- Checkout, payouts and ID/email/phone verification are not connected to any provider. Nothing is
+  charged; only the last four digits of a card or bank number are kept.
+- Maps are drawn illustrations, not real geography (`src/components/map-art.tsx` draws the same made-up streets for the same pickup area), and distance is only known for the sample listings (there is no geocoding).
+- Fees are assumptions: an 8% renter service fee and a 15% lender platform fee (`src/lib/format.ts`).
+
+Settings → "Reset sample data" restores the browser-side sample data without touching your account or listings.
+
+## Layout
+
+- `src/app` — one folder per route; `src/app/api` — the API routes
+- `src/server` — database client, auth/sessions, account and listing queries
+- `db/schema.sql`, `db/seed-data.json`, `scripts/db-setup.mjs` — schema, sample data, setup script
+- `db/sample-photos/` — illustrated images for the sample listings: `<listing id>-1.jpg` is the main photo, `-2`/`-3` are detail shots, and `-front`/`-back`/`-label`/`-wear` are the condition photos; re-run `npm run db:setup` after changing them
+- `public/art/` — site artwork (landing hero, sign-in panel, profile covers, occasion tiles) and `no-photo.jpg`, shown for a listing that has no photo yet
+- `src/components/ui` — shadcn/ui components
+- `src/components/kit.tsx` — shared building blocks (panels, fields, chips, steppers, photo slots)
+- `src/components/site` — navbar, footer, page shells
+- `src/lib` — types, the client store and its actions, browser-side sample data, formatting and pricing helpers
