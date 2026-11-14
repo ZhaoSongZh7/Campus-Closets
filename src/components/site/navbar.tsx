@@ -158,7 +158,7 @@ export function Navbar({ marketing = false }: { marketing?: boolean }) {
 
   return (
     <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-4 border-b bg-background px-4 md:gap-8 md:px-8">
-      <Logo href={account && !marketing ? "/browse" : "/"} />
+      <Logo />
       <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
         {marketing
           ? marketingLinks.map((l) => (
