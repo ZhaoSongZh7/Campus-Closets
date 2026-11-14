@@ -60,8 +60,8 @@ function Overview() {
           <div className="flex min-w-[240px] flex-1 flex-col gap-1">
             <p className="text-sm font-semibold">List your first outfit</p>
             <p className="text-[13px] text-muted-foreground">
-              Your listings are saved to your account and visible to everyone browsing. Until real bookings are built, a sample
-              renter sends a request shortly after you publish, so you can try accepting, handing off and getting paid.
+              Your listings are saved to your account and visible to everyone browsing. Requests from renters show up here
+              and under Requests as soon as someone asks to try on or reserve an outfit.
             </p>
           </div>
           <LinkButton href="/lender/closet/new">

@@ -2,7 +2,7 @@ import { unstable_rethrow } from "next/navigation"
 import { ZodError } from "zod"
 
 import { sessionUserId } from "./auth"
-import { ConfigError } from "./db"
+import { ConfigError, DB_CONNECTIONS } from "./db"
 
 export class HttpError extends Error {
   constructor(
@@ -43,9 +43,24 @@ export async function body(request: Request): Promise<unknown> {
   }
 }
 
-/** Wraps a route handler with the origin check and uniform error responses. */
+// At most one request per database connection runs at a time; the rest wait their turn here.
+let running = 0
+const waiting: (() => void)[] = []
+async function takeTurn() {
+  if (running < DB_CONNECTIONS) running++
+  else await new Promise<void>((resume) => waiting.push(resume))
+}
+function endTurn() {
+  const next = waiting.shift()
+  // Hand the slot straight to the next request, or free it.
+  if (next) next()
+  else running--
+}
+
+/** Wraps a route handler with the origin check, a turn at the database, and uniform error responses. */
 export function route<Ctx>(handler: (request: Request, ctx: Ctx) => Promise<Response>) {
   return async (request: Request, ctx: Ctx) => {
+    await takeTurn()
     try {
       assertSameOrigin(request)
       return await handler(request, ctx)
@@ -69,6 +84,8 @@ export function route<Ctx>(handler: (request: Request, ctx: Ctx) => Promise<Resp
       }
       console.error("[api] unexpected error:", err)
       return json({ error: "Something went wrong on our side." }, 500)
+    } finally {
+      endTurn()
     }
   }
 }

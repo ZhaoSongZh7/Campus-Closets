@@ -34,20 +34,26 @@ When deploying, set `DATABASE_URL` in the host's environment variables.
 
 ## Backend
 
-Accounts and listings are real and shared between users. Everything else is still sample data.
+Everything users do is stored in Postgres and shared between them: one person's request, message or review shows up for the other.
 
 | Data | Where it lives |
 | ---- | -------------- |
 | Accounts, sessions, profile, sizes, settings | Postgres (`users`, `sessions`) |
 | Listings and their photos | Postgres (`listings`, `listing_photos`) |
-| Rentals, try-ons, requests, messages, earnings, favourites | This browser's `localStorage`, per signed-in user |
+| Try-on and reservation requests, the rental itself, earnings | Postgres (`bookings`: one row that the renter and the lender both see) |
+| Conversations and messages | Postgres (`threads`, `messages`) |
+| Message images, pickup and return photos | Postgres (`uploads`) |
+| Notifications, reviews, saved outfits | Postgres (`notifications`, `reviews`, `favorites`) |
 
 API (all under `src/app/api`, JSON in and out):
 
 | Route | What it does |
 | ----- | ------------ |
 | `POST /api/auth/signup` · `login` · `logout` | Email + password accounts; sets or clears the session cookie |
-| `GET /api/bootstrap` | The signed-in account, every listed item (plus your own drafts), and the owners' public profiles |
+| `GET /api/bootstrap` | The signed-in account, every listed item (plus your own drafts), the owners' public profiles, and your activity |
+| `GET /api/activity` | Your rentals, try-ons, requests, earnings, conversations and notifications, plus booked dates and reviews. The app polls this every few seconds |
+| `POST /api/activity` | Performs one action (`{ "type": "sendMessage", … }`, `createReservation`, `respondRequest`, `confirmReturn`, `submitReview`, …) and returns the updated activity. The full list is `actionInput` in `src/server/activity.ts` |
+| `GET /api/uploads/[id]` | A message image or pickup/return photo, for the two people involved only |
 | `PATCH /api/me` · `DELETE /api/me` | Update or delete your own account |
 | `POST /api/listings` · `PUT/DELETE /api/listings/[id]` | Create, edit or delete a listing you own |
 | `GET /api/photos/[id]` | Serves a listing photo |
@@ -57,20 +63,25 @@ Security notes:
 - Passwords are hashed with scrypt and a per-user salt; the hash never leaves the server.
 - Sessions are random tokens in an `HttpOnly`, `SameSite=Lax` cookie (30 days). Only a hash of the token is stored.
 - Writes from other origins are rejected, input is validated with zod, and listings can only be changed by their owner.
+- Every action checks which side of the booking or conversation you are on: only the lender can accept, only the renter can cancel or confirm pickup, and a third person can neither read nor post. Prices are worked out on the server.
 - Other users see a lender as "First L." with no email or phone.
 - The tables have row-level security on with no policies, so Supabase's public REST API (and its publishable key) cannot read or write them; only the app's own database connection can.
-- Not built yet: login rate limiting, email verification, password reset, and Google/Apple sign-in.
+- Not built yet: login rate limiting, email verification, password reset, Google/Apple sign-in, and blocking or reporting another member.
+
+How updates reach the other person: there is no push channel. Each open tab asks `/api/activity` every 4 seconds, so a message or an acceptance appears within a few seconds.
+
+One thing to know about the database connection: through Supabase's transaction pooler, queries that the driver had to queue behind busy connections were seen to hang. So each request runs its queries one after another, and the API lets at most `DB_CONNECTIONS` (10, in `src/server/db.ts`) requests run at once. Keep new queries sequential rather than wrapping them in `Promise.all`.
 
 ## What is still simulated
 
-- Other lenders and renters are sample people. Sample lenders "accept" a try-on or reservation about
-  12 seconds after you request it; a sample renter requests each listing you publish about 15 seconds later.
+- The five sample lenders are rows in `users` that nobody logs in as. So their listings can be tried end
+  to end, the server plays them: a sample lender accepts a try-on or reservation about 12 seconds after
+  you request it and answers messages with a canned reply. There are no sample renters: requests for
+  your own listings only come from real members, and are never answered automatically.
 - Checkout, payouts and ID/email/phone verification are not connected to any provider. Nothing is
   charged; only the last four digits of a card or bank number are kept.
 - Maps are drawn illustrations, not real geography (`src/components/map-art.tsx` draws the same made-up streets for the same pickup area), and distance is only known for the sample listings (there is no geocoding).
 - Fees are assumptions: an 8% renter service fee and a 15% lender platform fee (`src/lib/format.ts`).
-
-Settings → "Reset sample data" restores the browser-side sample data without touching your account or listings.
 
 ## Layout
 
@@ -82,4 +93,4 @@ Settings → "Reset sample data" restores the browser-side sample data without t
 - `src/components/ui` — shadcn/ui components
 - `src/components/kit.tsx` — shared building blocks (panels, fields, chips, steppers, photo slots)
 - `src/components/site` — navbar, footer, page shells
-- `src/lib` — types, the client store and its actions, browser-side sample data, formatting and pricing helpers
+- `src/lib` — types, the client store and its actions, formatting and pricing helpers

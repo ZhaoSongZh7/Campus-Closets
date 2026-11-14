@@ -25,6 +25,9 @@ try {
       values (${p.id}, ${first}, ${rest.join(" ")}, ${p.neighborhood}, ${p.verified}, true, ${p.rentals}, ${p.rating}, ${p.replyTime}, ${`${p.memberSince}-01-15`})
       on conflict (id) do nothing`
   }
+  // Earlier versions also seeded sample renters who sent automatic requests. They are gone;
+  // this removes them (and anything they requested) from a database set up back then.
+  await sql`delete from users where is_sample and id in ('r1', 'r2', 'r3', 'r4')`
   let added = 0
   for (const l of listings) {
     const rows = await sql`
@@ -44,8 +47,8 @@ try {
   }
   for (const r of reviews) {
     await sql`
-      insert into reviews (id, listing_id, author_id, author_name, context, rating, text, created_at)
-      values (${r.id}, ${r.listingId}, ${r.authorId}, ${r.author}, ${r.context}, ${r.rating}, ${r.text}, now() - interval '30 days')
+      insert into reviews (id, listing_id, author_name, context, rating, text, created_at)
+      values (${r.id}, ${r.listingId}, ${r.author}, ${r.context}, ${r.rating}, ${r.text}, now() - interval '30 days')
       on conflict (id) do nothing`
   }
   // Sample photos: db/sample-photos/<listing id>-<n>.jpg for the gallery (1 is the main photo)

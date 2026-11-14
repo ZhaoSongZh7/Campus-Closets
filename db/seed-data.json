@@ -54,50 +54,6 @@
    "replyTime": "Usually replies the same day",
    "memberSince": 2026,
    "neighborhood": "Harbor Point"
-  },
-  {
-   "id": "r1",
-   "name": "Hannah Weiss",
-   "initials": "HW",
-   "verified": true,
-   "rentals": 6,
-   "rating": 4.9,
-   "replyTime": "",
-   "memberSince": 2026,
-   "neighborhood": "Old Town"
-  },
-  {
-   "id": "r2",
-   "name": "Jordan Ellis",
-   "initials": "JE",
-   "verified": true,
-   "rentals": 2,
-   "rating": 4.8,
-   "replyTime": "",
-   "memberSince": 2026,
-   "neighborhood": "Riverside"
-  },
-  {
-   "id": "r3",
-   "name": "Aiko Tanaka",
-   "initials": "AT",
-   "verified": true,
-   "rentals": 11,
-   "rating": 5,
-   "replyTime": "",
-   "memberSince": 2025,
-   "neighborhood": "Northside"
-  },
-  {
-   "id": "r4",
-   "name": "Sam Whitfield",
-   "initials": "SW",
-   "verified": false,
-   "rentals": 1,
-   "rating": 4.5,
-   "replyTime": "",
-   "memberSince": 2026,
-   "neighborhood": "Harbor Point"
   }
  ],
  "listings": [
@@ -881,7 +837,6 @@
   {
    "id": "rv1",
    "listingId": "l-emerald",
-   "authorId": "r1",
    "author": "Hannah Weiss",
    "context": "Rented for a wedding",
    "rating": 5,
@@ -890,7 +845,6 @@
   {
    "id": "rv2",
    "listingId": "l-emerald",
-   "authorId": "r3",
    "author": "Aiko Tanaka",
    "context": "Rented for a formal event",
    "rating": 5,
@@ -899,7 +853,6 @@
   {
    "id": "rv3",
    "listingId": "l-emerald",
-   "authorId": "r2",
    "author": "Jordan Ellis",
    "context": "Rented for a wedding",
    "rating": 4,
@@ -908,7 +861,6 @@
   {
    "id": "rv4",
    "listingId": "l-navy",
-   "authorId": "r4",
    "author": "Sam Whitfield",
    "context": "Rented for an interview",
    "rating": 5,
@@ -917,7 +869,6 @@
   {
    "id": "rv5",
    "listingId": "l-sequin",
-   "authorId": "r1",
    "author": "Hannah Weiss",
    "context": "Rented for a party",
    "rating": 5,

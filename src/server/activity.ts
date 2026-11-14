@@ -19,17 +19,9 @@ import { HttpError } from "./http"
 
 type Q = postgres.Sql | postgres.TransactionSql
 
-// How long a sample lender takes to accept, and how soon a sample renter asks for a new listing.
+// How long a sample lender takes to accept a request and to answer a message.
 const SAMPLE_ACCEPT_AFTER = "12 seconds"
-const SAMPLE_DEMAND_AFTER = "15 seconds"
 const SAMPLE_REPLY_AFTER = "2500 milliseconds"
-const SAMPLE_RENTERS = ["r1", "r2", "r3", "r4"]
-const SAMPLE_NOTES = [
-  "Hi! I'd love to borrow this for an event next week. Is the pickup time flexible?",
-  "This looks perfect. I'm usually this size but would like to check the fit first.",
-  "Is this still available? I can meet at a public spot nearby.",
-  "I rented something similar last spring and loved it. Hoping these dates work!",
-]
 const SAMPLE_REPLIES = [
   "Sounds good — thanks for letting me know!",
   "That works for me. See you then.",
@@ -238,13 +230,12 @@ function toTransaction(b: BookingRow, renterName: string): Transaction {
 }
 
 async function shared(q: Q): Promise<Pick<Activity, "booked" | "reviews">> {
-  const [ranges, reviews] = await Promise.all([
-    q<{ listing_id: string; start_date: string; end_date: string }[]>`
-      select listing_id, start_date, end_date from bookings
-      where kind = 'reservation' and status in ('confirmed', 'active') and end_date >= ${addDaysISO(-1)}`,
-    q<{ id: string; listing_id: string; author_name: string; context: string; rating: number; text: string; tags: string[] }[]>`
-      select id, listing_id, author_name, context, rating, text, tags from reviews order by created_at desc, id limit 300`,
-  ])
+  // Queries run one at a time on purpose (see DB_CONNECTIONS in db.ts).
+  const ranges = await q<{ listing_id: string; start_date: string; end_date: string }[]>`
+    select listing_id, start_date, end_date from bookings
+    where kind = 'reservation' and status in ('confirmed', 'active') and end_date >= ${addDaysISO(-1)}`
+  const reviews = await q<{ id: string; listing_id: string; author_name: string; context: string; rating: number; text: string; tags: string[] }[]>`
+    select id, listing_id, author_name, context, rating, text, tags from reviews order by created_at desc, id limit 300`
   const booked: Activity["booked"] = {}
   for (const r of ranges) (booked[r.listing_id] ??= []).push({ start: r.start_date, end: r.end_date })
   return {
@@ -268,33 +259,31 @@ async function shared(q: Q): Promise<Pick<Activity, "booked" | "reviews">> {
 export async function getActivity(userId: string | null): Promise<Activity> {
   const sql = db()
   if (!userId) return { ...EMPTY, ...(await shared(sql)) }
-  await simulateSamplePeople(userId)
+  await simulateSampleLenders(userId)
 
-  const [common, favorites, bookings, threads, notifications] = await Promise.all([
-    shared(sql),
-    sql<{ listing_id: string }[]>`select listing_id from favorites where user_id = ${userId} order by created_at`,
-    sql<BookingRow[]>`
+  const common = await shared(sql)
+  const favorites = await sql<{ listing_id: string }[]>`select listing_id from favorites where user_id = ${userId} order by created_at`
+  const bookings = await sql<BookingRow[]>`
       select b.*, l.title as listing_title,
         coalesce((select json_agg(json_build_object('id', u.id, 'phase', u.phase, 'slot', u.slot)) from uploads u where u.booking_id = b.id), '[]'::json) as photos
       from bookings b join listings l on l.id = b.listing_id
       where b.renter_id = ${userId} or b.lender_id = ${userId}
-      order by b.created_at desc, b.id`,
-    sql<ThreadRow[]>`
+      order by b.created_at desc, b.id`
+  const threads = await sql<ThreadRow[]>`
       select t.id, t.listing_id, t.renter_id, t.lender_id, t.context, t.renter_read_at, t.lender_read_at,
         coalesce((
           select json_agg(json_build_object('id', m.id, 'sender', m.sender_id, 'system', m.is_system, 'icon', m.icon, 'text', m.text,
                                             'upload', m.upload_id, 'at', floor(extract(epoch from m.created_at) * 1000))
-                          order by m.created_at, m.id)
+                          order by m.created_at, m.seq)
           from messages m where m.thread_id = t.id and m.created_at <= now()
         ), '[]'::json) as messages
       from threads t
       where (t.renter_id = ${userId} or t.lender_id = ${userId})
         -- an empty thread is only visible to the person who opened it
         and (t.created_by = ${userId} or exists (select 1 from messages m where m.thread_id = t.id and m.created_at <= now()))
-      order by t.updated_at desc, t.id`,
-    sql<{ id: string; text: string; href: string; read: boolean; created_at: Date }[]>`
-      select id, text, href, read, created_at from notifications where user_id = ${userId} order by created_at desc, id limit 50`,
-  ])
+      order by t.updated_at desc, t.id`
+  const notifications = await sql<{ id: string; text: string; href: string; read: boolean; created_at: Date }[]>`
+    select id, text, href, read, created_at from notifications where user_id = ${userId} order by created_at desc, id limit 50`
 
   const others = [
     ...bookings.map((b) => (b.renter_id === userId ? b.lender_id : b.renter_id)),
@@ -364,8 +353,9 @@ function decode(dataUrl: string) {
 /** Finds or creates the conversation about a listing between its owner and a renter. */
 async function threadFor(q: Q, o: { id?: string; listingId: string; renterId: string; lenderId: string; context: string; by: string }) {
   const rows = await q<{ id: string }[]>`
-    insert into threads (id, listing_id, renter_id, lender_id, context, created_by)
-    values (${o.id ?? `th-${randomUUID()}`}, ${o.listingId}, ${o.renterId}, ${o.lenderId}, ${o.context}, ${o.by})
+    insert into threads (id, listing_id, renter_id, lender_id, context, created_by, renter_read_at, lender_read_at)
+    -- "read" starts just before now, so the first message (written in this same transaction) counts as unread for the other person
+    values (${o.id ?? `th-${randomUUID()}`}, ${o.listingId}, ${o.renterId}, ${o.lenderId}, ${o.context}, ${o.by}, now() - interval '1 second', now() - interval '1 second')
     on conflict (listing_id, renter_id) do update set context = excluded.context, updated_at = now()
     returning id`
   return rows[0]!.id
@@ -393,7 +383,10 @@ async function event(q: Q, b: { listing_id: string; renter_id: string; lender_id
 }
 
 async function notify(q: Q, userId: string, text: string, href: string) {
-  await q`insert into notifications (id, user_id, text, href) values (${`n-${randomUUID()}`}, ${userId}, ${text}, ${href})`
+  // Sample people never log in, so there is nobody to notify.
+  await q`
+    insert into notifications (id, user_id, text, href)
+    select ${`n-${randomUUID()}`}, u.id, ${text}, ${href} from users u where u.id = ${userId} and not u.is_sample`
 }
 
 async function listingFor(q: Q, id: string) {
@@ -428,24 +421,20 @@ async function settleReturn(q: Q, b: BookingRow) {
   await q`update listings set rentals = rentals + 1 where id = ${b.listing_id}`
 }
 
-// ---------- writing: sample people ----------
+// ---------- writing: sample lenders ----------
 
 /**
- * Sample lenders and renters are rows in `users` that nobody logs in as. So that
- * a new member can try both sides alone, they act when that member next checks in:
- * sample lenders accept requests, and one sample renter asks for each new listing.
+ * The sample lenders are rows in `users` that nobody logs in as. So that their
+ * listings can be tried end to end, they accept a request the next time the
+ * renter checks in. Requests between real members are never answered automatically.
  */
-async function simulateSamplePeople(userId: string) {
+async function simulateSampleLenders(userId: string) {
   const sql = db()
-  const [due] = await sql<{ accept: boolean; demand: boolean }[]>`
-    select
-      exists (select 1 from bookings b join users u on u.id = b.lender_id
-              where b.renter_id = ${userId} and b.status = 'requested' and u.is_sample
-                and b.created_at < now() - ${SAMPLE_ACCEPT_AFTER}::interval) as accept,
-      exists (select 1 from listings l
-              where l.owner_id = ${userId} and l.status = 'listed' and l.created_at < now() - ${SAMPLE_DEMAND_AFTER}::interval
-                and not exists (select 1 from bookings b where b.listing_id = l.id)) as demand`
-  if (!due?.accept && !due?.demand) return
+  const [due] = await sql<{ accept: boolean }[]>`
+    select exists (select 1 from bookings b join users u on u.id = b.lender_id
+                   where b.renter_id = ${userId} and b.status = 'requested' and u.is_sample
+                     and b.created_at < now() - ${SAMPLE_ACCEPT_AFTER}::interval) as accept`
+  if (!due?.accept) return
 
   await sql.begin(async (tx) => {
     // One check-in at a time per member, so two tabs don't both act.
@@ -470,46 +459,6 @@ async function simulateSamplePeople(userId: string) {
         await say(tx, threadId, b.lender_id, `Happy to meet on ${fmt(b.start_date)} at ${b.pickup_time}. I'll bring the outfit in a garment bag.`)
         await notify(tx, userId, `${lender} confirmed your try-on for ${b.listing_title}`, "/rentals?tab=tryons")
       }
-    }
-
-    const listings = await tx<{ id: string; title: string; min_days: number; try_on: boolean; price_per_day: string; cleaning_fee: string; deposit: string }[]>`
-      select l.id, l.title, l.min_days, l.try_on, l.price_per_day, l.cleaning_fee, l.deposit from listings l
-      where l.owner_id = ${userId} and l.status = 'listed' and l.created_at < now() - ${SAMPLE_DEMAND_AFTER}::interval
-        and not exists (select 1 from bookings b where b.listing_id = l.id)
-      order by l.created_at`
-    if (!listings.length) return
-    const [{ n }] = await tx<{ n: number }[]>`select count(*)::int as n from bookings where lender_id = ${userId}`
-    for (const [i, l] of listings.entries()) {
-      const count = n + i
-      const renterId = SAMPLE_RENTERS[count % SAMPLE_RENTERS.length]!
-      const renter = await nameOf(tx, renterId)
-      const note = SAMPLE_NOTES[count % SAMPLE_NOTES.length]!
-      // Alternate reservations and try-ons so both kinds of request can be handled.
-      const tryOn = l.try_on && count % 2 === 1
-      const pair = { listing_id: l.id, renter_id: renterId, lender_id: userId }
-      const id = `${tryOn ? "to" : "rn"}-${randomUUID()}`
-      if (tryOn) {
-        const date = addDaysISO(2)
-        await tx`
-          insert into bookings (id, kind, listing_id, renter_id, lender_id, start_date, pickup_time, place, note)
-          values (${id}, 'tryon', ${l.id}, ${renterId}, ${userId}, ${date}, '5:30 PM', 'public', ${note})`
-        const threadId = await event(tx, pair, renterId, "Try-on", `Try-on requested for ${fmt(date)} · 5:30 PM`, "cal")
-        await say(tx, threadId, renterId, note)
-      } else {
-        const start = addDaysISO(0)
-        const end = addDaysISO(Math.max(2, l.min_days))
-        const days = rentalDays(start, end)
-        const price = quote(Number(l.price_per_day), days, Number(l.cleaning_fee))
-        await tx`
-          insert into bookings (id, kind, listing_id, renter_id, lender_id, start_date, end_date, pickup_time, return_time, place, note, code, handoff_code,
-                                days, subtotal, cleaning_fee, service_fee, total, deposit)
-          values (${id}, 'reservation', ${l.id}, ${renterId}, ${userId}, ${start}, ${end}, '5:30 PM', '6:00 PM', 'public', ${note},
-                  ${`RSV-${randomInt(1000, 10000)}`}, ${String(randomInt(1000, 10000))},
-                  ${days}, ${price.subtotal}, ${price.cleaningFee}, ${price.serviceFee}, ${price.total}, ${Number(l.deposit)})`
-        const threadId = await event(tx, pair, renterId, "Request", `Reservation requested for ${fmt(start)} – ${fmt(end)}`, "cal")
-        await say(tx, threadId, renterId, note)
-      }
-      await notify(tx, userId, `${renter} requested ${tryOn ? "a try-on for" : "to reserve"} ${l.title}`, "/lender/requests")
     }
   })
 }
@@ -804,7 +753,7 @@ async function run(tx: Q, me: string, a: ActionInput) {
       }
       await say(tx, t.id, me, text, { id: a.id, icon: a.icon, uploadId })
       await tx`update threads set ${tx(t.renter_id === me ? "renter_read_at" : "lender_read_at")} = now() where id = ${t.id}`
-      // Sample people answer with a short canned reply so the conversation isn't one-sided.
+      // Sample lenders answer with a short canned reply so the conversation isn't one-sided.
       const other = t.renter_id === me ? t.lender_id : t.renter_id
       const [sample] = await tx`select 1 from users where id = ${other} and is_sample`
       if (sample) await say(tx, t.id, other, SAMPLE_REPLIES[randomInt(SAMPLE_REPLIES.length)]!, { after: SAMPLE_REPLY_AFTER })

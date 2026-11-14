@@ -182,8 +182,11 @@ create table if not exists messages (
   icon        text check (icon in ('cal', 'check', 'pin')),
   text        text not null default '',
   upload_id   text references uploads (id) on delete set null,
-  created_at  timestamptz not null default now()
+  created_at  timestamptz not null default now(),
+  -- Messages written in one transaction share a timestamp; seq keeps them in the order they were written.
+  seq         bigint generated always as identity
 );
+alter table messages add column if not exists seq bigint generated always as identity;
 create index if not exists messages_thread_id_idx on messages (thread_id, created_at);
 
 create table if not exists notifications (
