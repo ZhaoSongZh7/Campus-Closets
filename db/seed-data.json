@@ -58,20 +58,9 @@
  ],
  "listings": [
   {
-   "brand": "Reformation",
-   "color": "Emerald",
-   "sizeNote": "US 6–8",
-   "fit": "True to size",
-   "description": "Bias-cut satin with a cowl neck and a low back. Floor length on 5'6\" with heels. Worn to two weddings; the hem was professionally taken up by an inch.",
    "minDays": 1,
-   "deposit": 50,
-   "cleaningFee": 12,
    "cleaningIncluded": true,
-   "tryOn": true,
-   "reviewCount": 23,
-   "rentals": 14,
    "status": "listed",
-   "pickupArea": "Riverside",
    "handoff": [
     "Meet at a public spot"
    ],
@@ -80,216 +69,86 @@
     "Sat",
     "Sun"
    ],
-   "careNotes": "Dry clean only. Please don't attempt spot cleaning — tell me about any marks at return.",
-   "id": "l-emerald",
-   "title": "Emerald satin gown",
-   "category": "Gown",
-   "size": "M",
-   "sizeGroup": "M",
-   "pricePerDay": 38,
-   "distance": 0.6,
-   "rating": 4.9,
-   "occasions": [
-    "Wedding",
-    "Formal event"
-   ],
-   "styles": [
-    "Classic",
-    "Vintage",
-    "Formal"
-   ],
+   "createdDaysAgo": 30,
+   "id": "l-engracia",
    "ownerId": "p1",
-   "createdDaysAgo": 60
-  },
-  {
-   "brand": "SuitSupply",
-   "color": "Navy",
-   "sizeNote": "Jacket 40R · Trousers 34×32",
-   "fit": "True to size",
-   "description": "Half-canvassed wool suit in a true navy. Slim through the leg. Great for interviews and daytime weddings.",
-   "minDays": 1,
-   "deposit": 50,
-   "cleaningFee": 15,
-   "cleaningIncluded": true,
-   "tryOn": true,
-   "reviewCount": 12,
-   "rentals": 9,
-   "status": "listed",
-   "pickupArea": "Old Town",
-   "handoff": [
-    "Meet at a public spot"
-   ],
-   "days": [
-    "Fri",
-    "Sat",
-    "Sun"
-   ],
-   "careNotes": "Dry clean only. Please don't attempt spot cleaning — tell me about any marks at return.",
-   "id": "l-navy",
-   "title": "Navy two-piece suit",
-   "category": "Suit",
-   "size": "40R",
-   "sizeGroup": "M",
-   "pricePerDay": 45,
-   "distance": 1.2,
-   "rating": 4.8,
-   "occasions": [
-    "Interview",
-    "Wedding",
-    "Formal event"
-   ],
-   "styles": [
-    "Classic",
-    "Formal"
-   ],
-   "ownerId": "p2",
-   "createdDaysAgo": 60
-  },
-  {
-   "brand": "Self-Portrait",
-   "color": "Gold",
-   "sizeNote": "US 2–4",
-   "fit": "True to size",
-   "description": "Fully lined sequin mini with long sleeves. No missing sequins. Runs slightly short.",
-   "minDays": 1,
-   "deposit": 50,
-   "cleaningFee": 12,
-   "cleaningIncluded": true,
-   "tryOn": true,
-   "reviewCount": 17,
-   "rentals": 11,
-   "status": "listed",
-   "pickupArea": "Northside",
-   "handoff": [
-    "Meet at a public spot"
-   ],
-   "days": [
-    "Fri",
-    "Sat",
-    "Sun"
-   ],
-   "careNotes": "Dry clean only. Please don't attempt spot cleaning — tell me about any marks at return.",
-   "id": "l-sequin",
-   "title": "Sequin cocktail dress",
+   "pickupArea": "Riverside",
+   "distance": 0.6,
+   "title": "Engracia Sequin Maxi Dress",
+   "brand": "Princess Polly",
    "category": "Dress",
-   "size": "S",
+   "color": "Burgundy",
+   "size": "US 4",
    "sizeGroup": "S",
-   "pricePerDay": 29,
-   "distance": 0.9,
-   "rating": 5,
+   "sizeNote": "US 4 · adjustable straps",
+   "fit": "True to size",
+   "description": "Burgundy satin maxi dress with a sequin-embellished bust, thin adjustable straps and a side zip. The satin has no stretch, so go by your usual size. Worn once to a holiday party.",
    "occasions": [
     "Party",
-    "Date night"
-   ],
-   "styles": [
-    "Bold",
-    "Romantic"
-   ],
-   "ownerId": "p3",
-   "createdDaysAgo": 60
-  },
-  {
-   "brand": "Theory",
-   "color": "Ivory",
-   "sizeNote": "US 10–12",
-   "fit": "True to size",
-   "description": "Worn a handful of times and stored in a garment bag. Happy to share measurements or extra photos before a try-on.",
-   "minDays": 1,
-   "deposit": 30,
-   "cleaningFee": 8,
-   "cleaningIncluded": true,
-   "tryOn": true,
-   "reviewCount": 9,
-   "rentals": 6,
-   "status": "listed",
-   "pickupArea": "Market District",
-   "handoff": [
-    "Meet at a public spot"
-   ],
-   "days": [
-    "Fri",
-    "Sat",
-    "Sun"
-   ],
-   "careNotes": "Dry clean only. Please don't attempt spot cleaning — tell me about any marks at return.",
-   "id": "l-ivory",
-   "title": "Ivory tailored blazer",
-   "category": "Blazer",
-   "size": "L",
-   "sizeGroup": "L",
-   "pricePerDay": 22,
-   "distance": 2.1,
-   "rating": 4.7,
-   "occasions": [
-    "Interview",
-    "Graduation"
-   ],
-   "styles": [
-    "Minimal",
-    "Classic"
-   ],
-   "ownerId": "p4",
-   "createdDaysAgo": 60
-  },
-  {
-   "brand": "Rixo",
-   "color": "Multi",
-   "sizeNote": "US 6–8",
-   "fit": "True to size",
-   "description": "Worn a handful of times and stored in a garment bag. Happy to share measurements or extra photos before a try-on.",
-   "minDays": 1,
-   "deposit": 30,
-   "cleaningFee": 0,
-   "cleaningIncluded": false,
-   "tryOn": true,
-   "reviewCount": 11,
-   "rentals": 8,
-   "status": "listed",
-   "pickupArea": "Riverside",
-   "handoff": [
-    "Meet at a public spot"
-   ],
-   "days": [
-    "Fri",
-    "Sat",
-    "Sun"
-   ],
-   "careNotes": "Dry clean only. Please don't attempt spot cleaning — tell me about any marks at return.",
-   "id": "l-floral",
-   "title": "Floral midi wrap dress",
-   "category": "Dress",
-   "size": "M",
-   "sizeGroup": "M",
-   "pricePerDay": 24,
-   "distance": 1.5,
-   "rating": 4.6,
-   "occasions": [
-    "Graduation",
     "Date night",
-    "Party"
+    "Formal event"
+   ],
+   "styles": [
+    "Romantic",
+    "Formal"
+   ],
+   "pricePerDay": 24,
+   "deposit": 40,
+   "cleaningFee": 10,
+   "tryOn": true,
+   "rating": 4.9,
+   "reviewCount": 14,
+   "rentals": 9,
+   "careNotes": "I hand wash it between rentals. Please don't wash or spot clean it yourself — just tell me about any marks at return."
+  },
+  {
+   "minDays": 1,
+   "cleaningIncluded": true,
+   "status": "listed",
+   "handoff": [
+    "Meet at a public spot"
+   ],
+   "days": [
+    "Fri",
+    "Sat",
+    "Sun"
+   ],
+   "createdDaysAgo": 30,
+   "id": "l-lyricah",
+   "ownerId": "p1",
+   "pickupArea": "Riverside",
+   "distance": 0.6,
+   "title": "Lyricah Tiered Tie Back Maxi Dress",
+   "brand": "Princess Polly",
+   "category": "Dress",
+   "color": "Plum Noir",
+   "size": "US 6",
+   "sizeGroup": "M",
+   "sizeNote": "US 6 · adjustable straps",
+   "fit": "True to size",
+   "description": "Deep plum maxi dress in a burnout floral fabric, with a V-neckline, gathered bust, tiered skirt and a tie at the open back. Fully lined, with adjustable straps and a side zip. No stretch.",
+   "occasions": [
+    "Wedding",
+    "Formal event",
+    "Date night"
    ],
    "styles": [
     "Romantic",
     "Boho"
    ],
-   "ownerId": "p1",
-   "createdDaysAgo": 60
+   "pricePerDay": 26,
+   "deposit": 40,
+   "cleaningFee": 10,
+   "tryOn": true,
+   "rating": 4.8,
+   "reviewCount": 9,
+   "rentals": 6,
+   "careNotes": "I wash it on a cold, gentle cycle between rentals. Please don't wash it yourself."
   },
   {
-   "brand": "Hugo Boss",
-   "color": "Black",
-   "sizeNote": "Jacket 42L · Trousers 36×34",
-   "fit": "True to size",
-   "description": "Worn a handful of times and stored in a garment bag. Happy to share measurements or extra photos before a try-on.",
    "minDays": 1,
-   "deposit": 80,
-   "cleaningFee": 18,
    "cleaningIncluded": true,
-   "tryOn": true,
-   "reviewCount": 6,
-   "rentals": 5,
    "status": "listed",
-   "pickupArea": "Old Town",
    "handoff": [
     "Meet at a public spot"
    ],
@@ -298,384 +157,86 @@
     "Sat",
     "Sun"
    ],
-   "careNotes": "Dry clean only. Please don't attempt spot cleaning — tell me about any marks at return.",
-   "id": "l-tux",
-   "title": "Black tie tuxedo",
-   "category": "Tuxedo",
-   "size": "42L",
-   "sizeGroup": "L",
-   "pricePerDay": 55,
-   "distance": 3.2,
-   "rating": 4.9,
-   "occasions": [
-    "Formal event",
-    "Wedding"
-   ],
-   "styles": [
-    "Black tie",
-    "Formal"
-   ],
-   "ownerId": "p2",
-   "createdDaysAgo": 60
-  },
-  {
-   "brand": "Handmade",
-   "color": "Pink",
-   "sizeNote": "Blouse 34 · Skirt adjustable",
-   "fit": "True to size",
-   "description": "Three-piece set with hand embroidery and a matching dupatta. Drawstring waist fits a range of sizes.",
-   "minDays": 1,
-   "deposit": 100,
-   "cleaningFee": 20,
-   "cleaningIncluded": true,
-   "tryOn": true,
-   "reviewCount": 14,
-   "rentals": 10,
-   "status": "listed",
+   "createdDaysAgo": 30,
+   "id": "l-pagoda",
+   "ownerId": "p3",
    "pickupArea": "Northside",
-   "handoff": [
-    "Meet at a public spot"
-   ],
-   "days": [
-    "Fri",
-    "Sat",
-    "Sun"
-   ],
-   "careNotes": "Dry clean only. Please don't attempt spot cleaning — tell me about any marks at return.",
-   "id": "l-lehenga",
-   "title": "Embroidered lehenga set",
-   "category": "Set",
-   "size": "S",
+   "distance": 2.1,
+   "title": "Under The Pagoda Maxi Dress",
+   "brand": "Peppermayo",
+   "category": "Dress",
+   "color": "Dark Floral",
+   "size": "US 4",
    "sizeGroup": "S",
-   "pricePerDay": 60,
-   "distance": 4.4,
-   "rating": 5,
+   "sizeNote": "US 4 · the brand suggests sizing down",
+   "fit": "Runs large",
+   "description": "Strapless maxi dress in Peppermayo's dark floral print, with the matching neck scarf included. Fully lined, with silicone taping along the neckline so it stays up and an invisible side zip.",
    "occasions": [
     "Wedding",
-    "Formal event"
-   ],
-   "styles": [
-    "Cultural / traditional",
-    "Bold"
-   ],
-   "ownerId": "p3",
-   "createdDaysAgo": 60
-  },
-  {
-   "brand": "Vince",
-   "color": "Ivory",
-   "sizeNote": "US 0–2",
-   "fit": "True to size",
-   "description": "Worn a handful of times and stored in a garment bag. Happy to share measurements or extra photos before a try-on.",
-   "minDays": 1,
-   "deposit": 50,
-   "cleaningFee": 12,
-   "cleaningIncluded": true,
-   "tryOn": false,
-   "reviewCount": 5,
-   "rentals": 4,
-   "status": "listed",
-   "pickupArea": "Market District",
-   "handoff": [
-    "Meet at a public spot"
-   ],
-   "days": [
-    "Fri",
-    "Sat",
-    "Sun"
-   ],
-   "careNotes": "Dry clean only. Please don't attempt spot cleaning — tell me about any marks at return.",
-   "id": "l-slip",
-   "title": "Champagne slip dress",
-   "category": "Dress",
-   "size": "XS",
-   "sizeGroup": "XS",
-   "pricePerDay": 26,
-   "distance": 0.8,
-   "rating": 4.5,
-   "occasions": [
-    "Date night",
-    "Party"
-   ],
-   "styles": [
-    "Minimal",
-    "Romantic"
-   ],
-   "ownerId": "p4",
-   "createdDaysAgo": 60
-  },
-  {
-   "brand": "J.Crew",
-   "color": "Grey",
-   "sizeNote": "Jacket 38S · Trousers 31×30",
-   "fit": "True to size",
-   "description": "Worn a handful of times and stored in a garment bag. Happy to share measurements or extra photos before a try-on.",
-   "minDays": 1,
-   "deposit": 50,
-   "cleaningFee": 15,
-   "cleaningIncluded": true,
-   "tryOn": true,
-   "reviewCount": 4,
-   "rentals": 3,
-   "status": "listed",
-   "pickupArea": "Harbor Point",
-   "handoff": [
-    "Meet at a public spot"
-   ],
-   "days": [
-    "Fri",
-    "Sat",
-    "Sun"
-   ],
-   "careNotes": "Dry clean only. Please don't attempt spot cleaning — tell me about any marks at return.",
-   "id": "l-charcoal",
-   "title": "Charcoal wool suit",
-   "category": "Suit",
-   "size": "38S",
-   "sizeGroup": "S",
-   "pricePerDay": 40,
-   "distance": 2.7,
-   "rating": 4.6,
-   "occasions": [
-    "Interview",
-    "Formal event"
-   ],
-   "styles": [
-    "Classic",
-    "Minimal"
-   ],
-   "ownerId": "p5",
-   "createdDaysAgo": 60
-  },
-  {
-   "brand": "Staud",
-   "color": "Red",
-   "sizeNote": "US 6",
-   "fit": "True to size",
-   "description": "Worn a handful of times and stored in a garment bag. Happy to share measurements or extra photos before a try-on.",
-   "minDays": 1,
-   "deposit": 50,
-   "cleaningFee": 0,
-   "cleaningIncluded": false,
-   "tryOn": true,
-   "reviewCount": 7,
-   "rentals": 6,
-   "status": "listed",
-   "pickupArea": "Northside",
-   "handoff": [
-    "Meet at a public spot"
-   ],
-   "days": [
-    "Fri",
-    "Sat",
-    "Sun"
-   ],
-   "careNotes": "Dry clean only. Please don't attempt spot cleaning — tell me about any marks at return.",
-   "id": "l-jumpsuit",
-   "title": "Red halter jumpsuit",
-   "category": "Jumpsuit",
-   "size": "M",
-   "sizeGroup": "M",
-   "pricePerDay": 31,
-   "distance": 1.9,
-   "rating": 4.4,
-   "occasions": [
     "Party",
     "Date night"
    ],
    "styles": [
     "Bold",
-    "Streetwear"
+    "Boho"
    ],
-   "ownerId": "p3",
-   "createdDaysAgo": 60
-  },
-  {
-   "brand": "Ralph Lauren",
-   "color": "Burgundy",
-   "sizeNote": "44R",
-   "fit": "True to size",
-   "description": "Worn a handful of times and stored in a garment bag. Happy to share measurements or extra photos before a try-on.",
-   "minDays": 1,
+   "pricePerDay": 32,
    "deposit": 50,
    "cleaningFee": 12,
-   "cleaningIncluded": true,
    "tryOn": true,
-   "reviewCount": 3,
-   "rentals": 3,
-   "status": "listed",
-   "pickupArea": "Harbor Point",
-   "handoff": [
-    "Meet at a public spot"
-   ],
-   "days": [
-    "Fri",
-    "Sat",
-    "Sun"
-   ],
-   "careNotes": "Dry clean only. Please don't attempt spot cleaning — tell me about any marks at return.",
-   "id": "l-velvet",
-   "title": "Velvet dinner jacket",
-   "category": "Jacket",
-   "size": "XL",
-   "sizeGroup": "XL",
-   "pricePerDay": 34,
-   "distance": 5.6,
-   "rating": 4.8,
-   "occasions": [
-    "Formal event",
-    "Party"
-   ],
-   "styles": [
-    "Black tie",
-    "Vintage"
-   ],
-   "ownerId": "p5",
-   "createdDaysAgo": 60
-  },
-  {
-   "brand": "Vintage",
-   "color": "White",
-   "sizeNote": "US 10",
-   "fit": "True to size",
-   "description": "Worn a handful of times and stored in a garment bag. Happy to share measurements or extra photos before a try-on.",
-   "minDays": 1,
-   "deposit": 50,
-   "cleaningFee": 12,
-   "cleaningIncluded": true,
-   "tryOn": true,
-   "reviewCount": 8,
-   "rentals": 7,
-   "status": "listed",
-   "pickupArea": "Riverside",
-   "handoff": [
-    "Meet at a public spot"
-   ],
-   "days": [
-    "Fri",
-    "Sat",
-    "Sun"
-   ],
-   "careNotes": "Dry clean only. Please don't attempt spot cleaning — tell me about any marks at return.",
-   "id": "l-lace",
-   "title": "Lace tea-length dress",
-   "category": "Dress",
-   "size": "L",
-   "sizeGroup": "L",
-   "pricePerDay": 27,
-   "distance": 3.9,
-   "rating": 4.7,
-   "occasions": [
-    "Graduation",
-    "Wedding"
-   ],
-   "styles": [
-    "Vintage",
-    "Romantic"
-   ],
-   "ownerId": "p1",
-   "createdDaysAgo": 60
-  },
-  {
-   "brand": "COS",
-   "color": "White",
-   "sizeNote": "US 4",
-   "fit": "True to size",
-   "description": "Worn a handful of times and stored in a garment bag. Happy to share measurements or extra photos before a try-on.",
-   "minDays": 1,
-   "deposit": 25,
-   "cleaningFee": 8,
-   "cleaningIncluded": true,
-   "tryOn": true,
-   "reviewCount": 6,
-   "rentals": 5,
-   "status": "listed",
-   "pickupArea": "Market District",
-   "handoff": [
-    "Meet at a public spot"
-   ],
-   "days": [
-    "Fri",
-    "Sat",
-    "Sun"
-   ],
-   "careNotes": "Dry clean only. Please don't attempt spot cleaning — tell me about any marks at return.",
-   "id": "l-grad",
-   "title": "Pleated graduation dress",
-   "category": "Dress",
-   "size": "S",
-   "sizeGroup": "S",
-   "pricePerDay": 19,
-   "distance": 1.1,
-   "rating": 4.3,
-   "occasions": [
-    "Graduation"
-   ],
-   "styles": [
-    "Minimal",
-    "Preppy"
-   ],
-   "ownerId": "p4",
-   "createdDaysAgo": 60
-  },
-  {
-   "brand": "Handmade",
-   "color": "Blue",
-   "sizeNote": "Chest 40",
-   "fit": "True to size",
-   "description": "Worn a handful of times and stored in a garment bag. Happy to share measurements or extra photos before a try-on.",
-   "minDays": 1,
-   "deposit": 50,
-   "cleaningFee": 12,
-   "cleaningIncluded": true,
-   "tryOn": true,
-   "reviewCount": 9,
-   "rentals": 8,
-   "status": "listed",
-   "pickupArea": "Northside",
-   "handoff": [
-    "Meet at a public spot"
-   ],
-   "days": [
-    "Fri",
-    "Sat",
-    "Sun"
-   ],
-   "careNotes": "Dry clean only. Please don't attempt spot cleaning — tell me about any marks at return.",
-   "id": "l-kurta",
-   "title": "Hand-embroidered kurta set",
-   "category": "Set",
-   "size": "M",
-   "sizeGroup": "M",
-   "pricePerDay": 35,
-   "distance": 6.3,
    "rating": 4.9,
+   "reviewCount": 7,
+   "rentals": 5,
+   "careNotes": "Please keep the scarf with the dress. I clean both after each rental."
+  },
+  {
+   "minDays": 1,
+   "cleaningIncluded": true,
+   "status": "listed",
+   "handoff": [
+    "Meet at a public spot"
+   ],
+   "days": [
+    "Fri",
+    "Sat",
+    "Sun"
+   ],
+   "createdDaysAgo": 30,
+   "id": "l-linen-jacket",
+   "ownerId": "p2",
+   "pickupArea": "Old Town",
+   "distance": 1.2,
+   "title": "Polo Soft Tailored Fit Linen Suit Jacket",
+   "brand": "Polo Ralph Lauren",
+   "category": "Blazer",
+   "color": "Navy",
+   "size": "40R",
+   "sizeGroup": "M",
+   "sizeNote": "40R",
+   "fit": "True to size",
+   "description": "Dark navy linen suit jacket in Polo's soft tailored fit, with a notch lapel and a lightly structured shoulder. Pairs with the cream linen trousers in my closet for a summer wedding. Linen creases as you wear it; that's part of the look.",
    "occasions": [
     "Wedding",
+    "Interview",
     "Formal event"
    ],
    "styles": [
-    "Cultural / traditional",
-    "Classic"
+    "Classic",
+    "Preppy"
    ],
-   "ownerId": "p3",
-   "createdDaysAgo": 60
+   "pricePerDay": 55,
+   "deposit": 150,
+   "cleaningFee": 18,
+   "tryOn": true,
+   "rating": 4.8,
+   "reviewCount": 12,
+   "rentals": 9,
+   "careNotes": "Dry clean only. Please don't attempt spot cleaning — tell me about any marks at return."
   },
   {
-   "brand": "Maje",
-   "color": "Pink",
-   "sizeNote": "US 6",
-   "fit": "True to size",
-   "description": "Worn a handful of times and stored in a garment bag. Happy to share measurements or extra photos before a try-on.",
    "minDays": 1,
-   "deposit": 50,
-   "cleaningFee": 12,
    "cleaningIncluded": true,
-   "tryOn": false,
-   "reviewCount": 5,
-   "rentals": 4,
    "status": "listed",
-   "pickupArea": "Market District",
    "handoff": [
     "Meet at a public spot"
    ],
@@ -684,41 +245,42 @@
     "Sat",
     "Sun"
    ],
-   "careNotes": "Dry clean only. Please don't attempt spot cleaning — tell me about any marks at return.",
-   "id": "l-tweed",
-   "title": "Tweed skirt suit",
-   "category": "Suit",
-   "size": "M",
+   "createdDaysAgo": 30,
+   "id": "l-linen-trouser",
+   "ownerId": "p2",
+   "pickupArea": "Old Town",
+   "distance": 1.2,
+   "title": "Linen Suit Trouser",
+   "brand": "Polo Ralph Lauren",
+   "category": "Trousers",
+   "color": "Cream",
+   "size": "34×32",
    "sizeGroup": "M",
-   "pricePerDay": 33,
-   "distance": 7.8,
-   "rating": 4.6,
+   "sizeNote": "Waist 34 · inseam 32",
+   "fit": "True to size",
+   "description": "Cream linen suit trousers with a straight leg. Wear them with the navy linen jacket from my closet, or on their own with a knit or a blazer as in the photo (only the trousers are included).",
    "occasions": [
-    "Interview",
-    "Graduation"
+    "Wedding",
+    "Graduation",
+    "Party"
    ],
    "styles": [
-    "Preppy",
-    "Classic"
+    "Classic",
+    "Preppy"
    ],
-   "ownerId": "p4",
-   "createdDaysAgo": 60
+   "pricePerDay": 28,
+   "deposit": 60,
+   "cleaningFee": 12,
+   "tryOn": true,
+   "rating": 4.7,
+   "reviewCount": 5,
+   "rentals": 4,
+   "careNotes": "Dry clean only. Cream shows everything, so please mention any marks at return."
   },
   {
-   "brand": "Vintage",
-   "color": "Black",
-   "sizeNote": "US 14",
-   "fit": "True to size",
-   "description": "Worn a handful of times and stored in a garment bag. Happy to share measurements or extra photos before a try-on.",
    "minDays": 1,
-   "deposit": 75,
-   "cleaningFee": 12,
    "cleaningIncluded": true,
-   "tryOn": true,
-   "reviewCount": 4,
-   "rentals": 4,
    "status": "listed",
-   "pickupArea": "Riverside",
    "handoff": [
     "Meet at a public spot"
    ],
@@ -727,132 +289,101 @@
     "Sat",
     "Sun"
    ],
-   "careNotes": "Dry clean only. Please don't attempt spot cleaning — tell me about any marks at return.",
-   "id": "l-flapper",
-   "title": "Beaded flapper dress",
+   "createdDaysAgo": 30,
+   "id": "l-oren",
+   "ownerId": "p4",
+   "pickupArea": "Market District",
+   "distance": 0.9,
+   "title": "Oren Silk Dress",
+   "brand": "Reformation",
    "category": "Dress",
-   "size": "XL",
-   "sizeGroup": "XL",
-   "pricePerDay": 42,
-   "distance": 9.5,
-   "rating": 4.8,
+   "color": "Blue",
+   "size": "US 4",
+   "sizeGroup": "S",
+   "sizeNote": "US 4 · relaxed fit",
+   "fit": "True to size",
+   "description": "Strapless silk charmeuse dress with a straight neckline, an A-line skirt and a separate matching neck scarf, which is included. 100% silk, lined and not sheer, with elastic at the neckline and a relaxed fit throughout.",
+   "occasions": [
+    "Wedding",
+    "Formal event",
+    "Date night"
+   ],
+   "styles": [
+    "Minimal",
+    "Classic",
+    "Romantic"
+   ],
+   "pricePerDay": 48,
+   "deposit": 100,
+   "cleaningFee": 20,
+   "tryOn": true,
+   "rating": 5,
+   "reviewCount": 16,
+   "rentals": 11,
+   "careNotes": "Dry clean only — it's silk, so no water or spot cleaning please. Keep the scarf with the dress."
+  },
+  {
+   "minDays": 1,
+   "cleaningIncluded": true,
+   "status": "listed",
+   "handoff": [
+    "Meet at a public spot"
+   ],
+   "days": [
+    "Fri",
+    "Sat",
+    "Sun"
+   ],
+   "createdDaysAgo": 30,
+   "id": "l-hotdog",
+   "ownerId": "p5",
+   "pickupArea": "Harbor Point",
+   "distance": 3.4,
+   "title": "Hot Dog Costume",
+   "brand": "Rasta Imposta",
+   "category": "Costume",
+   "color": "Multi",
+   "size": "One size",
+   "sizeGroup": "M",
+   "sizeNote": "One size · fits most adults",
+   "fit": "True to size",
+   "description": "One-piece hot dog costume with a mustard squiggle down the front. It pulls on over your own clothes; the black top and jeans in the photo aren't included.",
    "occasions": [
     "Party"
    ],
    "styles": [
-    "Vintage",
     "Bold"
    ],
-   "ownerId": "p1",
-   "createdDaysAgo": 60
-  },
-  {
-   "brand": "Massimo Dutti",
-   "color": "Ivory",
-   "sizeNote": "Jacket 42R · Trousers 35×32",
-   "fit": "True to size",
-   "description": "Worn a handful of times and stored in a garment bag. Happy to share measurements or extra photos before a try-on.",
-   "minDays": 1,
-   "deposit": 50,
-   "cleaningFee": 12,
-   "cleaningIncluded": true,
-   "tryOn": true,
-   "reviewCount": 3,
-   "rentals": 2,
-   "status": "listed",
-   "pickupArea": "Old Town",
-   "handoff": [
-    "Meet at a public spot"
-   ],
-   "days": [
-    "Fri",
-    "Sat",
-    "Sun"
-   ],
-   "careNotes": "Dry clean only. Please don't attempt spot cleaning — tell me about any marks at return.",
-   "id": "l-linen",
-   "title": "Linen summer suit",
-   "category": "Suit",
-   "size": "42R",
-   "sizeGroup": "L",
-   "pricePerDay": 37,
-   "distance": 12.4,
-   "rating": 4.5,
-   "occasions": [
-    "Wedding",
-    "Graduation"
-   ],
-   "styles": [
-    "Classic",
-    "Boho"
-   ],
-   "ownerId": "p2",
-   "createdDaysAgo": 60
-  },
-  {
-   "brand": "Toteme",
-   "color": "Black",
-   "sizeNote": "US 6–8",
-   "fit": "True to size",
-   "description": "Worn a handful of times and stored in a garment bag. Happy to share measurements or extra photos before a try-on.",
-   "minDays": 1,
-   "deposit": 80,
-   "cleaningFee": 12,
-   "cleaningIncluded": true,
-   "tryOn": true,
-   "reviewCount": 10,
-   "rentals": 9,
-   "status": "listed",
-   "pickupArea": "Harbor Point",
-   "handoff": [
-    "Meet at a public spot"
-   ],
-   "days": [
-    "Fri",
-    "Sat",
-    "Sun"
-   ],
-   "careNotes": "Dry clean only. Please don't attempt spot cleaning — tell me about any marks at return.",
-   "id": "l-column",
-   "title": "Minimal black column gown",
-   "category": "Gown",
-   "size": "M",
-   "sizeGroup": "M",
-   "pricePerDay": 48,
-   "distance": 0.4,
+   "pricePerDay": 8,
+   "deposit": 10,
+   "cleaningFee": 4,
+   "tryOn": false,
    "rating": 4.9,
-   "occasions": [
-    "Formal event",
-    "Wedding"
-   ],
-   "styles": [
-    "Minimal",
-    "Black tie"
-   ],
-   "ownerId": "p5",
-   "createdDaysAgo": 60
+   "reviewCount": 21,
+   "rentals": 17,
+   "careNotes": "Spot clean only. Please don't put it in the wash."
   }
  ],
  "reviews": [
   {
    "id": "rv1",
-   "listingId": "l-emerald",
+   "listingId": "l-engracia",
    "author": "Hannah Weiss",
-   "context": "Rented for a wedding",
+   "context": "Rented for a party",
    "rating": 5,
    "text": "Fit exactly as described and the satin photographs beautifully. Handoff took five minutes."
   },
   {
    "id": "rv2",
-   "listingId": "l-emerald",
+   "listingId": "l-oren",
    "author": "Aiko Tanaka",
-   "context": "Rented for a formal event",
+   "context": "Rented for a wedding",
    "rating": 5,
-   "text": "Spotless condition. Maya let me try it first, which made all the difference."
+   "text": "Spotless condition and the scarf was included. The lender let me try it first, which made all the difference."
   },
   {
    "id": "rv3",
-   "listingId": "l-emerald",
+   "listingId": "l-lyricah",
    "author": "Jordan Ellis",
    "context": "Rented for a wedding",
    "rating": 4,
@@ -860,19 +391,19 @@
   },
   {
    "id": "rv4",
-   "listingId": "l-navy",
+   "listingId": "l-linen-jacket",
    "author": "Sam Whitfield",
-   "context": "Rented for an interview",
+   "context": "Rented for a wedding",
    "rating": 5,
-   "text": "Sharp suit, true to the listed size. Easy pickup downtown."
+   "text": "Sharp jacket, true to the listed size. Easy pickup in Old Town."
   },
   {
    "id": "rv5",
-   "listingId": "l-sequin",
+   "listingId": "l-hotdog",
    "author": "Hannah Weiss",
    "context": "Rented for a party",
    "rating": 5,
-   "text": "Not a single loose sequin. Got compliments all night."
+   "text": "Exactly what it looks like. Got laughs all night."
   }
  ]
 }

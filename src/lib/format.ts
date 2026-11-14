@@ -18,7 +18,7 @@ export const STYLES = [
   "Cultural / traditional",
 ]
 export const OCCASIONS = ["Wedding", "Interview", "Party", "Formal event", "Graduation", "Date night"]
-export const CATEGORIES = ["Dress", "Gown", "Suit", "Tuxedo", "Blazer", "Jacket", "Jumpsuit", "Set", "Skirt", "Top"]
+export const CATEGORIES = ["Dress", "Gown", "Suit", "Tuxedo", "Blazer", "Jacket", "Trousers", "Jumpsuit", "Set", "Skirt", "Top", "Costume"]
 export const COLORS = ["Black", "White", "Ivory", "Navy", "Grey", "Red", "Burgundy", "Emerald", "Blue", "Pink", "Gold", "Multi"]
 export const TIME_SLOTS = ["10:00 AM", "10:30 AM", "11:00 AM", "1:00 PM", "2:30 PM", "4:00 PM", "5:30 PM", "6:00 PM"]
 export const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]

@@ -74,10 +74,13 @@ One thing to know about the database connection: through Supabase's transaction 
 
 ## What is still simulated
 
-- The five sample lenders are rows in `users` that nobody logs in as. So their listings can be tried end
-  to end, the server plays them: a sample lender accepts a try-on or reservation about 12 seconds after
-  you request it and answers messages with a canned reply. There are no sample renters: requests for
-  your own listings only come from real members, and are never answered automatically.
+- The sample listings can belong to a real account: set `SAMPLE_OWNER_EMAIL` in `.env.local` to that account's
+  email and run `npm run db:setup`. That account then sees them in its closet, can edit them, and answers
+  requests for them itself. After that the setup script leaves their photos and owner alone.
+- Without `SAMPLE_OWNER_EMAIL`, the listings belong to five sample lenders, which are rows in `users` that
+  nobody logs in as. The server plays them: a sample lender accepts a try-on or reservation about 12 seconds
+  after you request it and answers messages with a canned reply. Requests between real members are never
+  answered automatically, and there are no sample renters.
 - Checkout, payouts and ID/email/phone verification are not connected to any provider. Nothing is
   charged; only the last four digits of a card or bank number are kept.
 - Maps are drawn illustrations, not real geography (`src/components/map-art.tsx` draws the same made-up streets for the same pickup area), and distance is only known for the sample listings (there is no geocoding).
@@ -88,8 +91,8 @@ One thing to know about the database connection: through Supabase's transaction 
 - `src/app` — one folder per route; `src/app/api` — the API routes
 - `src/server` — database client, auth/sessions, account and listing queries
 - `db/schema.sql`, `db/seed-data.json`, `scripts/db-setup.mjs` — schema, sample data, setup script
-- `db/sample-photos/` — illustrated images for the sample listings: `<listing id>-1.jpg` is the main photo, `-2`/`-3` are detail shots, and `-front`/`-back`/`-label`/`-wear` are the condition photos; re-run `npm run db:setup` after changing them
-- `public/art/` — site artwork (landing hero, sign-in panel, profile covers, occasion tiles) and `no-photo.jpg`, shown for a listing that has no photo yet
+- `db/sample-photos/` — photos for the sample listings, converted from `src/assets/`: `<listing id>-1.jpg` is the main photo and `-2` a second shot (`-front`/`-back`/`-label`/`-wear` would be condition photos); re-run `npm run db:setup` after changing them. These are the retailers' own product photos, so replace them before the site goes public
+- `public/art/` — site artwork made from the same photos (landing hero, sign-in panel, profile covers, occasion tiles) and `no-photo.jpg`, shown for a listing that has no photo yet
 - `src/components/ui` — shadcn/ui components
 - `src/components/kit.tsx` — shared building blocks (panels, fields, chips, steppers, photo slots)
 - `src/components/site` — navbar, footer, page shells
