@@ -1,4 +1,4 @@
--- Campus Closets schema. Safe to run repeatedly (`npm run db:setup`).
+-- Campus Closet schema. Safe to run repeatedly (`npm run db:setup`).
 
 create table if not exists users (
   id              text primary key,

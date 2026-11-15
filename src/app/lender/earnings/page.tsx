@@ -46,7 +46,7 @@ function exportCsv(rows: Transaction[]) {
   const url = URL.createObjectURL(new Blob([lines.join("\n")], { type: "text/csv" }))
   const a = document.createElement("a")
   a.href = url
-  a.download = "campus-closets-earnings.csv"
+  a.download = "campus-closet-earnings.csv"
   a.click()
   URL.revokeObjectURL(url)
 }

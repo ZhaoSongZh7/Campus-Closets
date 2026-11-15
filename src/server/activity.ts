@@ -660,7 +660,7 @@ async function run(tx: Q, me: string, a: ActionInput) {
       await tx`update bookings set status = 'completed', reviewed = true where id = ${b.id}`
       await tx`
         insert into reviews (id, listing_id, booking_id, author_id, author_name, context, rating, lender_rating, text, tags)
-        values (${`rv-${randomUUID()}`}, ${b.listing_id}, ${b.id}, ${me}, ${author}, 'Rented on Campus Closets', ${a.outfit}, ${a.lender},
+        values (${`rv-${randomUUID()}`}, ${b.listing_id}, ${b.id}, ${me}, ${author}, 'Rented on Campus Closet', ${a.outfit}, ${a.lender},
                 ${a.text.trim() || a.tags.join(" · ")}, ${tx.json(a.tags)})`
       await tx`
         update listings set rating = round(((rating * review_count + ${a.outfit}) / (review_count + 1))::numeric, 1), review_count = review_count + 1

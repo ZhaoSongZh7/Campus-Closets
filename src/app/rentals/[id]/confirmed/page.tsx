@@ -22,8 +22,8 @@ function downloadCalendar(rental: Rental, listing: Listing) {
     return `${date.replaceAll("-", "")}T${String(hour).padStart(2, "0")}${m[2]}00`
   }
   const event = (title: string, date: string, time: string) =>
-    ["BEGIN:VEVENT", `UID:${rental.id}-${title.split(" ")[0]}@campus-closets`, `DTSTART:${stamp(date, time)}`, "DURATION:PT30M", `SUMMARY:${title}: ${listing.title}`, `LOCATION:${listing.pickupArea}`, "END:VEVENT"].join("\r\n")
-  const ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Campus Closets//EN", event("Pickup", rental.start, rental.pickupTime), event("Return", rental.end, rental.returnTime), "END:VCALENDAR"].join("\r\n")
+    ["BEGIN:VEVENT", `UID:${rental.id}-${title.split(" ")[0]}@campus-closet`, `DTSTART:${stamp(date, time)}`, "DURATION:PT30M", `SUMMARY:${title}: ${listing.title}`, `LOCATION:${listing.pickupArea}`, "END:VEVENT"].join("\r\n")
+  const ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Campus Closet//EN", event("Pickup", rental.start, rental.pickupTime), event("Return", rental.end, rental.returnTime), "END:VCALENDAR"].join("\r\n")
   const url = URL.createObjectURL(new Blob([ics], { type: "text/calendar" }))
   const a = document.createElement("a")
   a.href = url

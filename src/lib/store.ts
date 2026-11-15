@@ -66,7 +66,7 @@ function toClientListing(l: ApiListing, me: Account | null, activity: Activity, 
 }
 
 // The place picked on Browse or the home page. It outranks the account's own place and is remembered in this browser.
-const NEAR_KEY = "campus-closets:near"
+const NEAR_KEY = "campus-closet:near"
 let near: Place | null = null
 function loadNear() {
   try {

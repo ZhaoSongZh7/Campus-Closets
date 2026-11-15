@@ -209,7 +209,7 @@ function Settings() {
           </Panel>
 
           <Panel id="privacy" className="scroll-mt-24">
-            <PanelHeader title="Your data" description="Your profile, listings, rentals, requests and messages are saved to your Campus Closets account, so they follow you to any device. Other members see your first name and last initial, never your email or phone." />
+            <PanelHeader title="Your data" description="Your profile, listings, rentals, requests and messages are saved to your Campus Closet account, so they follow you to any device. Other members see your first name and last initial, never your email or phone." />
             <p className="text-[13px] text-muted-foreground">Messages and pickup or return photos are only visible to you and the other person in that rental.</p>
           </Panel>
 

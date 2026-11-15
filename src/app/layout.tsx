@@ -8,7 +8,7 @@ import "./globals.css"
 const inter = Inter({ variable: "--font-sans", subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Campus Closets — rent outfits from closets nearby",
+  title: "Campus Closet — rent outfits from closets nearby",
   description:
     "A local, peer-to-peer clothing rental marketplace. Try outfits on in person, reserve your dates, and pick up nearby.",
 }

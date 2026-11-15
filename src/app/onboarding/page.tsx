@@ -69,6 +69,10 @@ function Onboarding() {
 
   return (
     <div className="flex flex-1 flex-col items-center gap-8 bg-subtle px-4 py-10">
+      <div className="flex flex-col items-center gap-2 text-center">
+        <p className="text-[32px] leading-tight font-semibold tracking-[-0.64px] sm:text-[40px] sm:tracking-[-0.8px]">New Fits, One Campus</p>
+        <p className="text-lg text-muted-foreground">Wear more. Waste less.</p>
+      </div>
       <Steps current={step} />
       <Panel className="w-full max-w-[720px] gap-6 p-8">
         {step === 0 && (

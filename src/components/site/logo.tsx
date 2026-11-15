@@ -4,7 +4,7 @@ import Link from "next/link"
 import logo from "@/assets/campus-closet.jpeg"
 import { cn } from "cn"
 
-export const BRAND = "Campus Closets"
+export const BRAND = "Campus Closet"
 
 /** The logo already spells out the name, so it stands alone with no text beside it. */
 export function Logo({ href = "/", className }: { href?: string; className?: string }) {

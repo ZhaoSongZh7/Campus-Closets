@@ -68,7 +68,7 @@ export function Gate({ auth = false, children }: { auth?: boolean; children: Rea
   if (status === "error") {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-3 px-6 py-32 text-center" role="alert">
-        <p className="text-base font-semibold">We couldn’t load Campus Closets</p>
+        <p className="text-base font-semibold">We couldn’t load Campus Closet</p>
         <p className="max-w-md text-sm text-muted-foreground">{error}</p>
         <Button variant="outline" onClick={retryLoad}>
           Try again

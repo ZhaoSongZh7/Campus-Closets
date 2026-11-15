@@ -1,4 +1,4 @@
-# Campus Closets
+# Campus Closet
 
 A local, peer-to-peer clothing rental marketplace MVP, built from the
 "Clothing Rental Marketplace — Desktop MVP" Figma file.
