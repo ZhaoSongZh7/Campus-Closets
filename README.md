@@ -91,7 +91,7 @@ One thing to know about the database connection: through Supabase's transaction 
 - Checkout, payouts and ID/email/phone verification are not connected to any provider. Nothing is
   charged; only the last four digits of a card or bank number are kept.
 - Maps are drawn illustrations, not real geography (`src/components/map-art.tsx` draws the same made-up streets for the same pickup area). Distances are real but approximate (ZIP code area to ZIP code area), and a listing shows its pickup area name instead when either place is unknown.
-- Fees are assumptions: an 8% renter service fee and a 15% lender platform fee (`src/lib/format.ts`).
+- Fees are assumptions: an 8% renter service fee and a 20% lender platform fee (`src/lib/format.ts`).
 
 ## Layout
 

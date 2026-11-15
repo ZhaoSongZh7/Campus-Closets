@@ -1,7 +1,7 @@
 import { addDays, differenceInCalendarDays, format, isToday, isTomorrow, parseISO } from "date-fns"
 
 export const SERVICE_FEE_RATE = 0.08
-export const PLATFORM_FEE_RATE = 0.15
+export const PLATFORM_FEE_RATE = 0.2
 
 export const SIZES = ["XS", "S", "M", "L", "XL", "XXL"]
 export const STYLES = [
