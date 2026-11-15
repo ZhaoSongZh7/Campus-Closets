@@ -3,11 +3,12 @@
 import { Suspense, useRef, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { cn } from "cn"
-import { DollarSign, MapPin, Upload, X } from "lucide-react"
+import { DollarSign, Upload, X } from "lucide-react"
 import { toast } from "sonner"
 
 import { useAccount, useApp } from "@/components/app-provider"
 import { BackLink, CheckItem, ChipGroup, Field, FieldGroup, PageTitle, Panel, PanelHeader, PhotoSlot, RadioCard, Row, SimpleSelect } from "@/components/kit"
+import { PlaceField } from "@/components/place-field"
 import { ListingCard } from "@/components/listing-card"
 import { NotFound } from "@/components/rental-bits"
 import { LenderShell } from "@/components/site/shell"
@@ -60,6 +61,7 @@ function blank(pickupArea: string): Listing {
     cleaningIncluded: true,
     tryOn: true,
     lenderId: "me",
+    geo: null,
     distance: null,
     rating: 0,
     reviewCount: 0,
@@ -296,10 +298,7 @@ function ListingForm({ existing }: { existing?: Listing }) {
             </label>
             <Separator />
             <Field label="Pickup area" hint="Exact address is only shared after you accept.">
-              <span className="relative">
-                <MapPin className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-                <Input value={l.pickupArea} onChange={(e) => patch({ pickupArea: e.target.value })} placeholder="Neighborhood or ZIP" className="pl-9" />
-              </span>
+              <PlaceField value={l.pickupArea} onChange={(pickupArea) => patch({ pickupArea })} placeholder="Neighborhood, ZIP code or City, ST" />
             </Field>
             <FieldGroup label="Handoff options">
               <div className="flex flex-col gap-2.5">

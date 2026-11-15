@@ -4,6 +4,7 @@ import { z } from "zod"
 import type { ApiListing, Person, PhotoKey } from "@/lib/types"
 
 import { db } from "./db"
+import { geoFromText } from "./geo"
 import { HttpError } from "./http"
 
 type PhotoRef = { id: string; kind: "gallery" | PhotoKey }
@@ -27,7 +28,7 @@ type ListingRow = {
   cleaning_fee: string
   cleaning_included: boolean
   try_on: boolean
-  distance_mi: string | null
+  owner_zip: string
   rating: string
   review_count: number
   rentals: number
@@ -69,7 +70,8 @@ function toListing(row: ListingRow): ApiListing {
     cleaningFee: Number(row.cleaning_fee),
     cleaningIncluded: row.cleaning_included,
     tryOn: row.try_on,
-    distance: row.distance_mi === null ? null : Number(row.distance_mi),
+    // A pickup area that isn't a ZIP or "City, ST" falls back to where the lender is.
+    geo: geoFromText(row.pickup_area) ?? geoFromText(row.owner_zip),
     rating: Number(row.rating),
     reviewCount: row.review_count,
     rentals: row.rentals,
@@ -88,7 +90,7 @@ const photo = z.string().max(900_000)
 const money = z.number().min(0).max(10_000)
 const tags = z.array(z.string().max(40)).max(20)
 
-/** What an owner may set. Rating, rentals and distance are never client-controlled. */
+/** What an owner may set. Rating and rentals are never client-controlled. */
 export const listingInput = z.object({
   title: z.string().trim().min(1, "Give the item a title.").max(60),
   category: z.string().max(40),
@@ -127,8 +129,8 @@ const WITH_PHOTOS = (sql: ReturnType<typeof db>) => sql`
 export async function listListings(viewerId: string | null): Promise<ApiListing[]> {
   const sql = db()
   const rows = await sql<ListingRow[]>`
-    select l.*, ${WITH_PHOTOS(sql)}
-    from listings l
+    select l.*, u.zip as owner_zip, ${WITH_PHOTOS(sql)}
+    from listings l join users u on u.id = l.owner_id
     where l.status = 'listed' or l.owner_id = ${viewerId}
     order by l.created_at desc, l.id`
   return rows.map(toListing)
@@ -136,7 +138,7 @@ export async function listListings(viewerId: string | null): Promise<ApiListing[
 
 async function getListing(id: string): Promise<ApiListing | null> {
   const sql = db()
-  const rows = await sql<ListingRow[]>`select l.*, ${WITH_PHOTOS(sql)} from listings l where l.id = ${id}`
+  const rows = await sql<ListingRow[]>`select l.*, u.zip as owner_zip, ${WITH_PHOTOS(sql)} from listings l join users u on u.id = l.owner_id where l.id = ${id}`
   return rows[0] ? toListing(rows[0]) : null
 }
 

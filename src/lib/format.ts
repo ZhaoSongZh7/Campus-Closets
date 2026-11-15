@@ -116,7 +116,18 @@ export function fileToDataUrl(file: File, max = 720): Promise<string> {
   })
 }
 
-/** "0.6 mi away", or the pickup area when the distance isn't known. */
+/** Miles between two points, as the crow flies. */
+export function milesBetween(a: { lat: number; lng: number }, b: { lat: number; lng: number }) {
+  const rad = Math.PI / 180
+  const h = Math.sin(((b.lat - a.lat) * rad) / 2) ** 2 + Math.cos(a.lat * rad) * Math.cos(b.lat * rad) * Math.sin(((b.lng - a.lng) * rad) / 2) ** 2
+  return 2 * 3958.8 * Math.asin(Math.min(1, Math.sqrt(h)))
+}
+
+/**
+ * "About 3 mi away", or the pickup area when the distance isn't known. Distances run
+ * between ZIP code areas, so they are rounded and the same area reads "In your area".
+ */
 export function whereLabel(l: { distance: number | null; pickupArea: string }) {
-  return l.distance === null ? l.pickupArea || "Nearby" : `${l.distance.toFixed(1)} mi away`
+  if (l.distance === null) return l.pickupArea || "Nearby"
+  return l.distance < 1 ? "In your area" : `About ${Math.round(l.distance)} mi away`
 }

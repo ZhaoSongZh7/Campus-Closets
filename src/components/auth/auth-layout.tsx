@@ -19,7 +19,7 @@ export function AuthLayout({
     <main className="grid min-h-screen flex-1 lg:grid-cols-2">
       <div className="flex flex-col items-center px-6 py-10">
         <div className="w-full max-w-[400px]">
-          <Logo />
+          <Logo className="h-20" />
         </div>
         <div className="flex w-full max-w-[400px] flex-1 flex-col justify-center gap-5 py-10">
           <div className="flex flex-col gap-2">

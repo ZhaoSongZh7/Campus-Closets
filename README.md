@@ -1,4 +1,4 @@
-# Mutuari
+# Campus Closets
 
 A local, peer-to-peer clothing rental marketplace MVP, built from the
 "Clothing Rental Marketplace — Desktop MVP" Figma file.
@@ -57,6 +57,7 @@ API (all under `src/app/api`, JSON in and out):
 | `PATCH /api/me` · `DELETE /api/me` | Update or delete your own account |
 | `POST /api/listings` · `PUT/DELETE /api/listings/[id]` | Create, edit or delete a listing you own |
 | `GET /api/photos/[id]` | Serves a listing photo |
+| `POST /api/geo` | Turns a device position (`{ lat, lng }`) or typed text (`{ text: "08540" }`) into a place: a label such as "Princeton, NJ 08540" and the centre of that ZIP code area |
 
 Security notes:
 
@@ -67,6 +68,8 @@ Security notes:
 - Other users see a lender as "First L." with no email or phone.
 - The tables have row-level security on with no policies, so Supabase's public REST API (and its publishable key) cannot read or write them; only the app's own database connection can.
 - Not built yet: login rate limiting, email verification, password reset, Google/Apple sign-in, and blocking or reporting another member.
+
+Places and distances: the location button on a place field (sign-up, onboarding, settings, Browse, the home page search, a listing's pickup area) asks the browser for the device's position and sends it to `POST /api/geo`, which finds the nearest ZIP code in a table bundled with the `zipcodes` package and returns its name. No outside service is called, and the position itself is not stored: only the place name is kept, and every distance runs between the centres of two ZIP code areas. A listing is measured from its pickup area, or from its lender's place when the pickup area is only a neighbourhood name; the viewer is measured from the place picked on Browse, else from their account. The table covers the US and Canada, typed text is understood as a ZIP/postal code or "City, ST", and the browser only offers location on `https://` or `localhost`.
 
 How updates reach the other person: there is no push channel. Each open tab asks `/api/activity` every 4 seconds, so a message or an acceptance appears within a few seconds.
 
@@ -83,17 +86,19 @@ One thing to know about the database connection: through Supabase's transaction 
   answered automatically, and there are no sample renters.
 - Checkout, payouts and ID/email/phone verification are not connected to any provider. Nothing is
   charged; only the last four digits of a card or bank number are kept.
-- Maps are drawn illustrations, not real geography (`src/components/map-art.tsx` draws the same made-up streets for the same pickup area), and distance is only known for the sample listings (there is no geocoding).
+- Maps are drawn illustrations, not real geography (`src/components/map-art.tsx` draws the same made-up streets for the same pickup area). Distances are real but approximate (ZIP code area to ZIP code area), and a listing shows its pickup area name instead when either place is unknown.
 - Fees are assumptions: an 8% renter service fee and a 15% lender platform fee (`src/lib/format.ts`).
 
 ## Layout
 
 - `src/app` — one folder per route; `src/app/api` — the API routes
-- `src/server` — database client, auth/sessions, account and listing queries
+- `src/server` — database client, auth/sessions, account and listing queries, place lookup (`geo.ts`)
 - `db/schema.sql`, `db/seed-data.json`, `scripts/db-setup.mjs` — schema, sample data, setup script
 - `db/sample-photos/` — photos for the sample listings, converted from `src/assets/`: `<listing id>-1.jpg` is the main photo and `-2` a second shot (`-front`/`-back`/`-label`/`-wear` would be condition photos); re-run `npm run db:setup` after changing them. These are the retailers' own product photos, so replace them before the site goes public
 - `public/art/` — site artwork made from the same photos (landing hero, sign-in panel, profile covers, occasion tiles) and `no-photo.jpg`, shown for a listing that has no photo yet
+- `src/assets/campus-closet.jpeg` — the logo, shown by `src/components/site/logo.tsx` (navbar, sign-in pages, footer). `src/app/icon.png` and `apple-icon.png` are the browser-tab and home-screen icons, cut from the hangers in the logo
 - `src/components/ui` — shadcn/ui components
 - `src/components/kit.tsx` — shared building blocks (panels, fields, chips, steppers, photo slots)
+- `src/components/place-field.tsx` — the place field with its "use my current location" button
 - `src/components/site` — navbar, footer, page shells
 - `src/lib` — types, the client store and its actions, formatting and pricing helpers

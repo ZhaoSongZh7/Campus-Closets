@@ -2,8 +2,8 @@
 
 import { useSyncExternalStore } from "react"
 
-import { addDaysISO, fmt, initialsOf, quote, rentalDays, todayISO } from "./format"
-import type { Account, Activity, ApiListing, Bootstrap, Listing, Message, Person, PhotoKey, Rental, State, Thread, TryOn } from "./types"
+import { addDaysISO, fmt, initialsOf, milesBetween, quote, rentalDays, todayISO } from "./format"
+import type { Account, Activity, ApiListing, Bootstrap, Geo, Listing, Message, Person, PhotoKey, Place, Rental, State, Thread, TryOn } from "./types"
 
 /**
  * The app state mirrors the server: the signed-in account, listings, and the
@@ -55,9 +55,34 @@ async function api<T>(path: string, init?: { method: string; body?: unknown }): 
 /** Ids for new rows are chosen here so the UI can link to them before the server answers. */
 const newId = (prefix: string) => `${prefix}${crypto.randomUUID().replaceAll("-", "").slice(0, 20)}`
 
-function toClientListing(l: ApiListing, me: Account | null, activity: Activity): Listing {
+function toClientListing(l: ApiListing, me: Account | null, activity: Activity, from: Geo | null): Listing {
   const { ownerId, ...rest } = l
-  return { ...rest, lenderId: me && ownerId === me.id ? "me" : ownerId, booked: activity.booked[l.id] ?? [] }
+  return {
+    ...rest,
+    lenderId: me && ownerId === me.id ? "me" : ownerId,
+    booked: activity.booked[l.id] ?? [],
+    distance: from && l.geo ? milesBetween(from, l.geo) : null,
+  }
+}
+
+// The place picked on Browse or the home page. It outranks the account's own place and is remembered in this browser.
+const NEAR_KEY = "campus-closets:near"
+let near: Place | null = null
+function loadNear() {
+  try {
+    const saved = JSON.parse(window.localStorage.getItem(NEAR_KEY) ?? "null") as Partial<Place> | null
+    if (saved && typeof saved.label === "string" && typeof saved.lat === "number" && typeof saved.lng === "number") near = { label: saved.label, lat: saved.lat, lng: saved.lng }
+  } catch {
+    /* storage unavailable or unreadable: start without a picked place */
+  }
+}
+function saveNear() {
+  try {
+    if (near) window.localStorage.setItem(NEAR_KEY, JSON.stringify(near))
+    else window.localStorage.removeItem(NEAR_KEY)
+  } catch {
+    /* storage unavailable: the choice lasts for this visit only */
+  }
 }
 
 function compose() {
@@ -78,7 +103,8 @@ function compose() {
     accounts: me ? [me] : [],
     session: me?.id ?? null,
     people: [...people.values()],
-    listings: remote.listings.map((l) => toClientListing(l, me, a)),
+    listings: remote.listings.map((l) => toClientListing(l, me, a, near ?? me?.geo ?? null)),
+    near,
   }
   snapshot = { state, status: "ready", error: "" }
   listeners.forEach((l) => l())
@@ -170,6 +196,7 @@ function act(action: { type: string } & Record<string, unknown>, optimistic?: (s
 function start() {
   if (started) return
   started = true
+  loadNear()
   void refresh()
   // Pick up listings other people added while this tab was in the background.
   window.addEventListener("focus", () => {
@@ -343,6 +370,22 @@ export const actions = {
   async logOut() {
     await api("/api/auth/logout", { method: "POST" })
     await refresh()
+  },
+
+  /** Sets (or, with null, clears) the place distances are measured from in this browser. */
+  setNear(place: Place | null) {
+    near = place
+    saveNear()
+    compose()
+  },
+
+  /**
+   * Finds the place for a device position or for typed text ("08540", "Princeton, NJ").
+   * Resolves to null when it can't be matched.
+   */
+  async findPlace(query: { lat: number; lng: number } | { text: string }): Promise<Place | null> {
+    const res = await api<{ place: Place | null }>("/api/geo", { method: "POST", body: query })
+    return res.ok ? res.data.place : null
   },
 
   /** Updates the signed-in account: shown immediately, then confirmed by the server. */

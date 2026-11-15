@@ -1,4 +1,4 @@
--- Mutuari schema. Safe to run repeatedly (`npm run db:setup`).
+-- Campus Closets schema. Safe to run repeatedly (`npm run db:setup`).
 
 create table if not exists users (
   id              text primary key,
@@ -61,7 +61,7 @@ create table if not exists listings (
   cleaning_fee      numeric(8,2) not null default 0,
   cleaning_included boolean not null default true,
   try_on            boolean not null default true,
-  distance_mi       numeric(5,1),               -- sample data only; no geocoding yet
+  distance_mi       numeric(5,1),               -- no longer read: distance is worked out from places (src/server/geo.ts)
   rating            numeric(2,1) not null default 0,
   review_count      integer not null default 0,
   rentals           integer not null default 0,

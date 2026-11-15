@@ -3,13 +3,13 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { cn } from "cn"
-import { ArrowRight, Check, MapPin, Shield, Upload } from "lucide-react"
+import { ArrowRight, Check, Shield, Upload } from "lucide-react"
 
 import { Gate, useAccount } from "@/components/app-provider"
 import { ChipGroup, Field, FieldGroup, LinkButton, Panel, SimpleSelect } from "@/components/kit"
+import { PlaceField } from "@/components/place-field"
 import { MinimalHeader } from "@/components/site/navbar"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { Slider } from "@/components/ui/slider"
 import { Switch } from "@/components/ui/switch"
@@ -119,10 +119,7 @@ function Onboarding() {
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Neighborhood or ZIP">
-                <span className="relative">
-                  <MapPin className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input value={zip} onChange={(e) => setZip(e.target.value)} placeholder="ZIP code" className="pl-9" />
-                </span>
+                <PlaceField value={zip} onChange={setZip} placeholder="ZIP code or City, ST" />
               </Field>
               <Field label="Search radius">
                 <SimpleSelect value={radius} onChange={setRadius} options={["1", "2", "5", "10", "25"].map((v) => ({ value: v, label: `Within ${v} mile${v === "1" ? "" : "s"}` }))} />

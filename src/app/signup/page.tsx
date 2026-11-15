@@ -3,10 +3,11 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Lock, MapPin } from "lucide-react"
+import { Lock } from "lucide-react"
 
 import { AuthLayout } from "@/components/auth/auth-layout"
 import { CheckItem, Field } from "@/components/kit"
+import { PlaceField } from "@/components/place-field"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { actions } from "@/lib/store"
@@ -59,10 +60,7 @@ export default function SignUpPage() {
           </span>
         </Field>
         <Field label="Neighborhood or ZIP">
-          <span className="relative">
-            <MapPin className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input required value={form.zip} onChange={update("zip")} placeholder="Used to show outfits near you" autoComplete="postal-code" className="pl-9" />
-          </span>
+          <PlaceField required value={form.zip} onChange={(zip) => setForm((f) => ({ ...f, zip }))} placeholder="ZIP code or City, ST" autoComplete="postal-code" />
         </Field>
         <CheckItem checked={agree} onChange={setAgree}>
           <span>

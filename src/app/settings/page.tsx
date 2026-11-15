@@ -7,6 +7,7 @@ import { toast } from "sonner"
 
 import { useAccount } from "@/components/app-provider"
 import { ChipGroup, Field, FieldGroup, IconTile, PageTitle, Panel, PanelHeader, PersonAvatar, SimpleSelect } from "@/components/kit"
+import { PlaceField } from "@/components/place-field"
 import { AppShell } from "@/components/site/shell"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -156,11 +157,14 @@ function Settings() {
           <Panel id="location" className="scroll-mt-24">
             <PanelHeader title="Location" description="Used to show outfits and renters near you." />
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Neighborhood or ZIP">
-                <span className="relative">
-                  <MapPin className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input value={zip} onChange={(e) => setZip(e.target.value)} onBlur={() => zip.trim() !== account.zip && actions.updateAccount({ zip: zip.trim() })} placeholder="ZIP code" className="pl-9" />
-                </span>
+              <Field label="Neighborhood or ZIP" hint={account.zip && !account.geo ? "We can’t tell where that is, so distances won’t show. Use a ZIP code or “City, ST”." : undefined}>
+                <PlaceField
+                  value={zip}
+                  onChange={setZip}
+                  onPlace={(place) => actions.updateAccount({ zip: place.label })}
+                  onBlur={() => zip.trim() !== account.zip && actions.updateAccount({ zip: zip.trim() })}
+                  placeholder="ZIP code or City, ST"
+                />
               </Field>
               <Field label="Search radius">
                 <SimpleSelect
@@ -205,7 +209,7 @@ function Settings() {
           </Panel>
 
           <Panel id="privacy" className="scroll-mt-24">
-            <PanelHeader title="Your data" description="Your profile, listings, rentals, requests and messages are saved to your Mutuari account, so they follow you to any device. Other members see your first name and last initial, never your email or phone." />
+            <PanelHeader title="Your data" description="Your profile, listings, rentals, requests and messages are saved to your Campus Closets account, so they follow you to any device. Other members see your first name and last initial, never your email or phone." />
             <p className="text-[13px] text-muted-foreground">Messages and pickup or return photos are only visible to you and the other person in that rental.</p>
           </Panel>
 

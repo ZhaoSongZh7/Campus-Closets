@@ -5,6 +5,7 @@ import type { Account } from "@/lib/types"
 
 import { hashPassword } from "./auth"
 import { db } from "./db"
+import { geoFromText } from "./geo"
 import { HttpError } from "./http"
 
 type UserRow = {
@@ -44,6 +45,7 @@ function toAccount(u: UserRow): Account {
     phone: u.phone,
     bio: u.bio,
     zip: u.zip,
+    geo: geoFromText(u.zip),
     radius: u.radius,
     approxLocation: u.approx_location,
     avatar: u.avatar ?? undefined,

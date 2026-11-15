@@ -1,15 +1,16 @@
+import Image from "next/image"
 import Link from "next/link"
-import { Shirt } from "lucide-react"
 
-export const BRAND = "Mutuari"
+import logo from "@/assets/campus-closet.jpeg"
+import { cn } from "cn"
 
-export function Logo({ href = "/" }: { href?: string }) {
+export const BRAND = "Campus Closets"
+
+/** The logo already spells out the name, so it stands alone with no text beside it. */
+export function Logo({ href = "/", className }: { href?: string; className?: string }) {
   return (
-    <Link href={href} className="flex shrink-0 items-center gap-2.5">
-      <span className="flex size-7 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-        <Shirt className="size-4" />
-      </span>
-      <span className="text-base font-semibold">{BRAND}</span>
+    <Link href={href} aria-label={`${BRAND} home`} className="flex shrink-0 items-center">
+      <Image src={logo} alt={BRAND} unoptimized priority className={cn("h-13 w-auto", className)} />
     </Link>
   )
 }

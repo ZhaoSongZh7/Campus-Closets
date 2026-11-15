@@ -22,11 +22,13 @@ import {
 import { useMaybeApp } from "@/components/app-provider"
 import { DateRangeField, Photo, LinkButton, Panel, SimpleSelect } from "@/components/kit"
 import { ListingCard } from "@/components/listing-card"
+import { LocateButton, useLocate } from "@/components/place-field"
 import { Footer } from "@/components/site/footer"
 import { Navbar } from "@/components/site/navbar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { OCCASIONS, PLATFORM_FEE_RATE, SIZES } from "@/lib/format"
+import { actions } from "@/lib/store"
 
 const occasionTiles = [
   { label: "Weddings", value: "Wedding", image: "/art/occasion-wedding.jpg" },
@@ -65,6 +67,10 @@ function SectionHeading({ title, description, children }: { title: string; descr
 function SearchBar() {
   const router = useRouter()
   const [location, setLocation] = useState("")
+  const { locating, locate } = useLocate((place) => {
+    setLocation(place.label)
+    actions.setNear(place)
+  })
   const [start, setStart] = useState<string>()
   const [end, setEnd] = useState<string>()
   const [size, setSize] = useState("")
@@ -87,18 +93,22 @@ function SearchBar() {
         router.push(`/browse${params.size ? `?${params}` : ""}`)
       }}
     >
-      <label className={cell}>
-        <span className={cellLabel}>Location</span>
-        <span className="flex items-center gap-1.5">
-          <MapPin className="size-3.5 shrink-0 text-muted-foreground" />
+      <div className={`${cell} md:flex-[1.7]`}>
+        <label htmlFor="search-location" className={cellLabel}>
+          Location
+        </label>
+        <span className="flex items-center gap-1">
+          {/* The location button stands where the pin icon would be. */}
+          <LocateButton locating={locating} onClick={locate} className="-my-1.5 -ml-1.5" />
           <input
+            id="search-location"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             placeholder="City or ZIP"
             className="w-full min-w-0 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
           />
         </span>
-      </label>
+      </div>
       {divider}
       <div className={cell}>
         <span className={cellLabel}>Dates</span>

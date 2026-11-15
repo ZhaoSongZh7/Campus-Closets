@@ -1,23 +1,25 @@
 "use client"
 
-import { Suspense, useMemo, useState } from "react"
+import { Suspense, useEffect, useMemo, useRef, useState } from "react"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import { ChevronLeft, ChevronRight, MapPin, Search, SlidersHorizontal, X } from "lucide-react"
+import { toast } from "sonner"
 
 import { Gate, useApp } from "@/components/app-provider"
 import { CheckItem, ChipGroup, DateRangeField, EmptyState, SegTabs, SimpleSelect } from "@/components/kit"
 import { MapArt } from "@/components/map-art"
 import { ListingCard } from "@/components/listing-card"
+import { PlaceField } from "@/components/place-field"
 import { Footer } from "@/components/site/footer"
 import { Navbar } from "@/components/site/navbar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { Slider } from "@/components/ui/slider"
 import { Switch } from "@/components/ui/switch"
 import { money, OCCASIONS, overlaps, SIZES, whereLabel } from "@/lib/format"
+import { actions, currentAccount } from "@/lib/store"
 import type { Listing } from "@/lib/types"
 
 const STYLE_FILTERS = ["Classic", "Minimal", "Bold", "Vintage", "Cultural / traditional"]
@@ -74,7 +76,24 @@ function MapView({ listings }: { listings: Listing[] }) {
 function Browse() {
   const s = useApp()
   const params = useSearchParams()
-  const [near, setNear] = useState(params.get("near") ?? "")
+  const account = currentAccount(s)
+  const [near, setNear] = useState(params.get("near") ?? s.near?.label ?? "")
+  // Typed text is matched to a place when the field is left (or Enter is pressed); distances then run from there.
+  const applyNear = async (text: string) => {
+    const wanted = text.trim()
+    if (!wanted) return actions.setNear(null)
+    if (wanted === s.near?.label) return
+    const place = await actions.findPlace({ text: wanted })
+    if (place) actions.setNear(place)
+    else toast.error(`We couldn’t tell where “${wanted}” is. Try a ZIP code or “City, ST”.`)
+  }
+  // A place carried over from the home page search is applied once, on arrival.
+  const arrivedWith = useRef(params.get("near"))
+  useEffect(() => {
+    if (arrivedWith.current) void applyNear(arrivedWith.current)
+    arrivedWith.current = null
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const [query, setQuery] = useState(params.get("q") ?? "")
   const [start, setStart] = useState(params.get("start") ?? undefined)
   const [end, setEnd] = useState(params.get("end") ?? undefined)
@@ -159,10 +178,16 @@ function Browse() {
   return (
     <>
       <div className="flex flex-wrap items-center gap-3 border-b px-4 py-4 md:px-8">
-        <span className="relative w-full sm:w-[220px]">
-          <MapPin className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-          <Input value={near} onChange={(e) => setNear(e.target.value)} placeholder="City or ZIP" aria-label="Location" className="pl-9" />
-        </span>
+        <PlaceField
+          value={near}
+          onChange={setNear}
+          onPlace={actions.setNear}
+          onBlur={() => void applyNear(near)}
+          onKeyDown={(e) => e.key === "Enter" && void applyNear(near)}
+          placeholder={account?.zip ? `Near ${account.zip}` : "City or ZIP"}
+          aria-label="Location"
+          className="w-full sm:w-[240px]"
+        />
         <DateRangeField
           start={start}
           end={end}

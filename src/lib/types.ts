@@ -10,6 +10,11 @@ export type Person = {
   neighborhood: string
 }
 
+/** The centre of a ZIP code area. Never anyone's exact position. */
+export type Geo = { lat: number; lng: number }
+/** A place the app can measure from: its label ("Princeton, NJ 08540") and centre. */
+export type Place = Geo & { label: string }
+
 export type PhotoKey = "front" | "back" | "label" | "wear"
 export type PhotoSet = Partial<Record<PhotoKey, string>>
 
@@ -38,7 +43,9 @@ export type Listing = {
   tryOn: boolean
   /** "me" for the signed-in user's own closet */
   lenderId: string
-  /** Miles from the viewer. Null when unknown (no geocoding yet). */
+  /** Centre of the pickup area's ZIP code (or the lender's), when the server could tell. */
+  geo: Geo | null
+  /** Miles from the viewer's area to the pickup area. Null when either place isn't known. */
   distance: number | null
   rating: number
   reviewCount: number
@@ -176,6 +183,8 @@ export type Account = {
   phone: string
   bio: string
   zip: string
+  /** Where `zip` is, worked out by the server. Null when it isn't a ZIP or "City, ST". */
+  geo?: Geo | null
   radius: number
   approxLocation: boolean
   avatar?: string
@@ -207,10 +216,12 @@ export type State = {
   threads: Thread[]
   notifications: Notification[]
   reviews: Review[]
+  /** The place the viewer is browsing from, when they picked one other than their account's. */
+  near: Place | null
 }
 
-/** A listing as the API returns it: owned by a user id, with photo URLs. */
-export type ApiListing = Omit<Listing, "lenderId" | "booked"> & { ownerId: string }
+/** A listing as the API returns it: owned by a user id, with photo URLs. Distance depends on the viewer, so the client adds it. */
+export type ApiListing = Omit<Listing, "lenderId" | "booked" | "distance"> & { ownerId: string }
 
 /** What a user does with other users, as the API returns it for the signed-in user. */
 export type Activity = Pick<State, "favorites" | "rentals" | "tryOns" | "requests" | "transactions" | "threads" | "notifications" | "reviews"> & {
