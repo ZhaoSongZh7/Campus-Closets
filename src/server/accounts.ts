@@ -131,8 +131,8 @@ export async function getAccount(userId: string): Promise<Account | null> {
 }
 
 export async function findLogin(emailAddress: string) {
-  const rows = await db()<{ id: string; password_hash: string | null }[]>`
-    select id, password_hash from users where lower(email) = ${emailAddress}`
+  const rows = await db()<{ id: string; email: string; password_hash: string | null }[]>`
+    select id, email, password_hash from users where lower(email) = ${emailAddress}`
   return rows[0] ?? null
 }
 
@@ -148,6 +148,39 @@ export async function createAccount(input: z.infer<typeof signUpInput>): Promise
   } catch (err) {
     if (isUniqueViolation(err)) throw new HttpError(409, "An account with this email already exists.")
     throw err
+  }
+}
+
+export type GoogleProfile = { sub: string; email: string; firstName: string; lastName: string }
+
+/**
+ * Finds the user a Google account signs in as, creating one for a new email.
+ *
+ * An email that already belongs to a password account is not taken over: sign-up
+ * never checked who owns that address, so Google proving it is not enough to hand
+ * the account to whoever arrives. The caller asks for the password once instead
+ * (see `connectGoogle`).
+ */
+export async function findOrCreateGoogleUser(profile: GoogleProfile): Promise<{ userId: string; isNew: boolean } | { needsPassword: true }> {
+  const sql = db()
+  const linked = await sql<{ id: string }[]>`select id from users where google_sub = ${profile.sub}`
+  if (linked[0]) return { userId: linked[0].id, isNew: false }
+  const sameEmail = await sql<{ id: string }[]>`select id from users where lower(email) = ${profile.email}`
+  if (sameEmail[0]) return { needsPassword: true }
+  const id = `u_${randomUUID()}`
+  await sql`
+    insert into users (id, email, google_sub, email_verified, first_name, last_name)
+    values (${id}, ${profile.email}, ${profile.sub}, true, ${profile.firstName}, ${profile.lastName})`
+  return { userId: id, isNew: true }
+}
+
+/** Connects a Google account to a user who has just proved they know the password. */
+export async function connectGoogle(userId: string, googleSub: string) {
+  try {
+    await db()`update users set google_sub = ${googleSub}, email_verified = true where id = ${userId} and google_sub is null`
+  } catch (err) {
+    // That Google account already signs in as someone else: leave both as they are.
+    if (!isUniqueViolation(err)) throw err
   }
 }
 

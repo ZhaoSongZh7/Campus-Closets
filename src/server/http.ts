@@ -57,6 +57,16 @@ function endTurn() {
   else running--
 }
 
+/** Runs database work in one of the request slots, for handlers that can't use `route` (they answer with redirects). */
+export async function withDatabaseTurn<T>(work: () => Promise<T>): Promise<T> {
+  await takeTurn()
+  try {
+    return await work()
+  } finally {
+    endTurn()
+  }
+}
+
 /** Wraps a route handler with the origin check, a turn at the database, and uniform error responses. */
 export function route<Ctx>(handler: (request: Request, ctx: Ctx) => Promise<Response>) {
   return async (request: Request, ctx: Ctx) => {

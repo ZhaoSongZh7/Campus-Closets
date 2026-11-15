@@ -12,14 +12,22 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { actions } from "@/lib/store"
 
+const GOOGLE_ERRORS: Record<string, string> = {
+  google_setup: "Google sign-in isn’t set up on this site yet. Log in with your email for now.",
+  google_cancelled: "Google sign-in was cancelled.",
+  google_failed: "Google sign-in didn’t go through. Please try again.",
+  google_unverified: "Google hasn’t verified that email address, so it can’t be used to sign in.",
+}
+
 function LoginForm() {
   const router = useRouter()
   const params = useSearchParams()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [remember, setRemember] = useState(true)
-  const [error, setError] = useState("")
+  const [error, setError] = useState(GOOGLE_ERRORS[params.get("error") ?? ""] ?? "")
   const [busy, setBusy] = useState(false)
+  const connecting = params.get("google") === "link"
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
@@ -34,6 +42,11 @@ function LoginForm() {
 
   return (
     <form onSubmit={submit} className="flex flex-col gap-4">
+      {connecting && (
+        <p role="status" className="rounded-lg border bg-subtle px-3 py-2.5 text-[13px]">
+          You already have an account with that email. Log in with your password once, and Google will be connected to it.
+        </p>
+      )}
       <Field label="Email">
         <Input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@example.com" autoComplete="email" />
       </Field>

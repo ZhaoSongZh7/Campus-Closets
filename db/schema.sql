@@ -32,6 +32,9 @@ create table if not exists users (
   created_at      timestamptz not null default now()
 );
 create unique index if not exists users_email_key on users (lower(email));
+-- Google's permanent id for the account that signs in as this user. Null until Google is connected.
+alter table users add column if not exists google_sub text;
+create unique index if not exists users_google_sub_key on users (google_sub);
 
 create table if not exists sessions (
   token_hash  text primary key,                 -- sha256 of the cookie value

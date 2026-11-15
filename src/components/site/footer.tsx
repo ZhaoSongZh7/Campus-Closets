@@ -12,7 +12,7 @@ const links = [
 export function Footer() {
   return (
     <footer className="flex min-h-[72px] flex-wrap items-center gap-x-6 gap-y-2 border-t bg-background px-4 py-4 md:px-8">
-      <Logo className="h-11" />
+      <Logo className="size-8" />
       <p className="text-[13px] text-muted-foreground">
         © 2026 {BRAND}. Rent occasion wear from closets nearby.
       </p>

@@ -38,14 +38,20 @@ export async function verifyPassword(password: string, stored: string | null) {
 
 const digest = (token: string) => createHash("sha256").update(token).digest("hex")
 
+/**
+ * True when the site is being served over HTTPS (hosts set x-forwarded-proto), so
+ * cookies can be marked Secure. Plain-HTTP localhost still works in every browser.
+ */
+export async function servedOverHttps() {
+  return (await headers()).get("x-forwarded-proto")?.split(",")[0]?.trim() === "https"
+}
+
 export async function createSession(userId: string) {
   const token = randomBytes(32).toString("base64url")
   const expires = new Date(Date.now() + SESSION_DAYS * 24 * 3600 * 1000)
   // Only the hash is stored, so a database leak does not expose usable session cookies.
   await db()`insert into sessions (token_hash, user_id, expires_at) values (${digest(token)}, ${userId}, ${expires})`
-  // Secure whenever the site is served over HTTPS (hosts set x-forwarded-proto);
-  // plain-HTTP localhost still works in every browser.
-  const https = (await headers()).get("x-forwarded-proto")?.split(",")[0]?.trim() === "https"
+  const https = await servedOverHttps()
   ;(await cookies()).set(COOKIE, token, {
     httpOnly: true,
     sameSite: "lax",
